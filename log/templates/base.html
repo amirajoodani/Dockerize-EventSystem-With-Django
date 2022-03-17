@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}event{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+{% if user.is_authenticated %}
+<body>
+  <div class="header">
+    <a   class="logo">Event system</a>
+    <div class="header-right">
+      <a href="{% url 'eventlist' %}" class=button>eventlist</a>
+      <a href="{% url 'event' %}" class=button>event</a>
+      <a href="{% url 'logout' %}" class="logout-button">Log Out</a>
+
+    </div>
+  </div>
+   <div id="body">
+    {% endif %}
+   {% block content %}{% endblock %}
+  </div>
+  <div>
+    
+  </div>
+
+</body>
+</html>

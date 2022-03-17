@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %} 
+{% load jformat %}
+
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>event</title>  
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/event.css' %}"/>  
+</head>  
+<body> 
+    
+<form method="POST" class="post-form" action="/event/{{ event.id }}"> 
+    {% csrf_token %} 
+    <div class="container">  
+<br>  
+    <div class="form-group row">  
+    <label class="col-sm-1 col-form-label"></label>  
+    <div class="col-sm-4">  
+    <h3>Enter Event </h3>  
+    </div>  
+  </div>  
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">name(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.name }}  
+    </div>  
+  </div>  
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">owner(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.owner }}  
+    </div>  
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">start date(*)</label>  
+    <div class="col-sm-4">
+      {% load jformat %}
+      {{ form.start_date }}  
+    </div>  
+  </div>  
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">End date</label>  
+    <div class="col-sm-4">  
+      {{ form.end_date }}  
+    </div>  
+  </div>  
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status</label>  
+    <div class="col-sm-4">  
+      {{ form.status }}  
+    </div>
+ </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Main Problem(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.mainproblem }}  
+    </div>  
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Detail Problem(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.detailproblem }}  
+    </div>  
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Bank</label>  
+    <div class="col-sm-4">  
+      {{ form.Bank }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Image</label>  
+    <div class="col-sm-4">  
+      {{ form.image }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">City</label>  
+    <div class="col-sm-4">  
+      {{ form.city }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Connection</label>  
+    <div class="col-sm-4">  
+      {{ form.Connection }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Incident ID</label>  
+    <div class="col-sm-4">  
+      {{ form.IncidentID }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">DownTime</label>  
+    <div class="col-sm-4">  
+      {{ form.DownTime }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">ReportToDepartment</label>  
+    <div class="col-sm-4">  
+      {{ form.ReportToDepartment }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name1</label>  
+    <div class="col-sm-4">  
+      {{ form.Assign_to_name1 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name2</label>  
+    <div class="col-sm-4">  
+      {{ form.Assign_to_name2 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name3</label>  
+    <div class="col-sm-4">  
+      {{ form.Assign_to_name3 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name4</label>  
+    <div class="col-sm-4">  
+      {{ form.Assign_to_name4 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign To Others</label>  
+    <div class="col-sm-4">  
+      {{ form.Assigng_to_others }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">SMS</label>  
+    <div class="col-sm-4">  
+      {{ form.SMS }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">description(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.description }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">reson(*)</label>  
+    <div class="col-sm-4">  
+      {{ form.reson }}  
+    </div>  
+  </div> 
+
+    
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert1</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert1 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert1</label>  
+    <div class="col-sm-4">  
+      {{ form.Status_Of_Expert1 }}  
+    </div>  
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert2</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert2 }}  
+    </div>
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert2</label>  
+    <div class="col-sm-4">  
+      {{ form.Status_Of_Expert2 }}  
+    </div>  
+    </div> 
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert3</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert3 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert3</label>  
+    <div class="col-sm-4">  
+      {{ form.Status_Of_Expert3 }}  
+    </div>  
+    </div> 
+  </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert4</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert4 }}  
+    </div> 
+    
+   <div class="form-group row">  
+     <label class="col-sm-2 col-form-label">Status_Of_Expert4</label>  
+     <div class="col-sm-4">  
+      {{ form.Status_Of_Expert4 }}  
+     </div>  
+     </div> 
+   </div> 
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert5</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert5 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert5</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert5 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert6</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert6 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert6</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert6 }}  
+    </div>  
+    </div> 
+  </div>
+
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert7</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert7 }}  
+    </div>  
+  </div>
+  
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert7</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert7 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert8</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert8 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert8</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert8 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert9</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert9 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert9</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert9 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert10</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert10 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert10</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert10 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert11</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert11 }}  
+    </div>  
+  </div> 
+
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert11</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert11 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert12</label>  
+    <div class="col-sm-4">  
+      {{ form.Expert12 }}  
+    </div>  
+  </div>
+  
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert12</label>  
+    <div class="col-sm-4">  
+     {{ form.Status_Of_Expert12 }}  
+    </div>  
+    </div> 
+  </div>
+
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_problem</label>  
+    <div class="col-sm-4">  
+      {{ form.Status_Of_problem }}  
+    </div>  
+  </div> 
+    
+    
+    <div class="form-group row">  
+    <label class="col-sm-1 col-form-label"></label>  
+    <div class="col-sm-4">  
+    <button type="submit" class="button">Submit</button>  
+    </div>  
+  </div>  
+    </div> 
+    {% endblock %}
+</form>  
+</body>  
+</html>

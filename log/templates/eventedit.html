@@ -1,0 +1,329 @@
+<!DOCTYPE html> 
+{% extends 'base.html' %}
+{% block content %}
+  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Event Update</title>  
+    {% load static %}  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>  
+</head>  
+<body>
+  
+  {% for message in messages %}
+  <p>{{message}}</p>
+  {%endfor %}
+      
+<form method="POST" class="post-form" >  
+        {% csrf_token %}  
+    <div class="container"> 
+  
+<br>  
+    <div class="form-group row">  
+    <label class="col-sm-1 col-form-label"></label>  
+    <div class="col-sm-4">  
+    <h3>Event Update Details</h3>  
+    </div>  
+  </div>  
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">name :</label>  
+    <div class="col-sm-4">  
+        <input type="text" name="eid" id="id_eid" required maxlength="20" value="{{ event.name }}"/>  
+    </div>  
+  </div>  
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Owner:</label>  
+    <div class="col-sm-4">  
+        <input type="text" name="ename" id="id_ename" required maxlength="100" value="{{ event.owner }}" />  
+    </div>  
+  </div>  
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">start_date:</label>  
+    <div class="col-sm-4">  
+        <input type="text" name="start_date" id="start_date" required maxlength="254" value="{{ event.start_date }}" />  
+    </div>  
+  </div>  
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">end_date:</label>  
+    <div class="col-sm-4">  
+        <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.end_date }}" />  
+    </div>  
+  </div>  
+    <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">mainproblem:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.mainproblem }}" />  
+   </div>  
+  </div> 
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">detailproblem:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.detailproblem }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Bank:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Bank }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">image:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.image }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">city:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.city }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Connection :</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Connection }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">IncidentID:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.IncidentID }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">DownTime:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.DownTime }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">ReportToDepartment:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.ReportToDepartment }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name1:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Assign_to_name1 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name2:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Assign_to_name2 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name3:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Assign_to_name3 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assign_to_name4:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Assign_to_name4 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Assigng_to_others:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.Assigng_to_others }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">SMS:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.SMS }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">description:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="15" value="{{ event.description }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">reson:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="econtact" id="id_econtact" required maxlength="255" value="{{ event.reson }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert1:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert1" id="Expert1" required maxlength="15" value="{{ event.Expert1 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert1:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert1" id="Status_Of_Expert1" required maxlength="105" value="{{ event.Status_Of_Expert1 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert2:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert2" id="Expert2" required maxlength="15" value="{{ event.Expert2 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert2:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert2" id="Status_Of_Expert2" required maxlength="15" value="{{ event.Status_Of_Expert2 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert3:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert3" id="Expert3" required maxlength="105" value="{{ event.Expert3 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert3:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert3" id="Status_Of_Expert3" required maxlength="105" value="{{ event.Status_Of_Expert3 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert4:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert4" id="Expert4" required maxlength="105" value="{{ event.Expert4 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert4:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert4" id="Status_Of_Expert4" required maxlength="105" value="{{ event.Status_Of_Expert4 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert5:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert5" id="Expert5" required maxlength="105" value="{{ event.Expert5 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert5:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert5" id="Status_Of_Expert5" required maxlength="105" value="{{ event.Status_Of_Expert5 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert6:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert6" id="Expert6" required maxlength="105" value="{{ event.Expert6 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert6:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert6" id="Status_Of_Expert6" required maxlength="105" value="{{ event.Status_Of_Expert6 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert7:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert7" id="Expert7" required maxlength="105" value="{{ event.Expert7 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert7:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert7" id="Status_Of_Expert7" required maxlength="105" value="{{ event.Status_Of_Expert7 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert7:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert7" id="Expert7" required maxlength="105" value="{{ event.Expert7 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert7:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert7" id="Status_Of_Expert7" required maxlength="105" value="{{ event.Status_Of_Expert7 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert8:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert8" id="Expert8" required maxlength="105" value="{{ event.Expert8 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert8:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert8" id="Status_Of_Expert8" required maxlength="105" value="{{ event.Status_Of_Expert8 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert9:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert9" id="Expert9" required maxlength="105" value="{{ event.Expert9 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert9:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert9" id="Status_Of_Expert9" required maxlength="105" value="{{ event.Status_Of_Expert9 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert10:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert10" id="Expert10" required maxlength="105" value="{{ event.Expert10 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert10:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert10" id="Status_Of_Expert10" required maxlength="105" value="{{ event.Status_Of_Expert10 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert11:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert11" id="Expert11" required maxlength="105" value="{{ event.Expert11 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert11:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert11" id="Status_Of_Expert11" required maxlength="105" value="{{ event.Status_Of_Expert11 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Expert12:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Expert12" id="Expert12" required maxlength="105" value="{{ event.Expert12 }}" />  
+   </div>  
+  </div>
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_Expert12:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_Expert12" id="Status_Of_Expert12" required maxlength="105" value="{{ event.Status_Of_Expert12 }}" />  
+   </div>  
+  </div>
+  
+  <div class="form-group row">  
+    <label class="col-sm-2 col-form-label">Status_Of_problem:</label>  
+    <div class="col-sm-4">  
+       <input type="text" name="Status_Of_problem" id="Status_Of_problem" required maxlength="15" value="{{ event.Status_Of_problem }}" />  
+   </div>  
+  </div>
+  
+    <div class="form-group row">  
+    <label class="col-sm-1 col-form-label"></label>  
+    <div class="col-sm-4">  
+    <button type="submit" class="button">Update</button>  
+    </div>  
+  </div>  
+    </div>  
+</form>  
+</body>  
+</html>  
+{% endblock %}

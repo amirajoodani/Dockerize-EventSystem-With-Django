@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %} Event {% endblock %}
+{% block content %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Eventlist</title>  
+     {% load static %}  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>  
+</head>  
+<body>  
+<table class="table table-striped table-bordered table-sm">  
+    <thead class="thead-dark">  
+    <tr>  
+        <th scope="col">Event Name</th>  
+        <th scope="col">Owner</th>  
+        <th scope="col">start_date</th>  
+        <th scope="col">end_date</th>  
+        <th scope="col"> status</th>
+        <th scope="col">mainproblem</th>
+        <th scope="col">detailproblem</th>
+        <th scope="col">Bank</th>
+        <th scope="col">image</th>  
+        <th scope="col">city</th>
+        <th scope="col">Connection</th>
+        <th scope="col">IncidentID</th>
+        <th scope="col">DownTime</th>
+        <th scope="col">ReportToDepartment</th>
+        <th scope="col">Assign_to_name1</th>
+        <th scope="col">Assign_to_name2</th>
+        <th scope="col">Assign_to_name3</th>
+        <th scope="col">Assign_to_name4</th>
+        <th scope="col">Assigng_to_others</th>
+        <th scope="col">SMS</th>
+        <th scope="col">description</th>
+        <th scope="col">reson</th>
+        <th scope="col">Expert1</th>
+        <th scope="col">Status_Of_Expert1</th>
+        <th scope="col">Expert2</th>
+        <th scope="col">Status_Of_Expert2</th>
+        <th scope="col">Expert3</th>
+        <th scope="col">Status_Of_Expert3</th>
+        <th scope="col">Expert4</th>
+        <th scope="col">Status_Of_Expert4</th>
+        <th scope="col">Expert5</th>
+        <th scope="col">Status_Of_Expert5</th>
+        <th scope="col">Expert6</th>
+        <th scope="col">Status_Of_Expert6</th>
+        <th scope="col">Expert7</th>
+        <th scope="col">Status_Of_Expert7</th>
+        <th scope="col">Expert8</th>
+        <th scope="col">Status_Of_Expert8</th>
+        <th scope="col">Expert9</th>
+        <th scope="col">Status_Of_Expert9</th>
+        <th scope="col">Expert10</th>
+        <th scope="col">Status_Of_Expert10</th>
+        <th scope="col">Expert11</th>
+        <th scope="col">Status_Of_Expert11</th>
+        <th scope="col">Expert12</th>
+        <th scope="col">Status_Of_Expert12</th>
+        <th scope="col">Status_Of_problem</th>
+        <th scope="col">Action</th>
+
+        
+        
+    </tr>  
+    </thead>  
+    <tbody>  
+{% for event in events %}  
+    <tr>  
+        <td>{{ event.name }}</td>  
+        <td>{{ event.owner }}</td>  
+        <td>{{ event.start_date }}</td>  
+        <td>{{ event.end_date }}</td> 
+        <td>{{ event.status }}</td> 
+        <td>{{ event.mainproblem }}</td> 
+        <td>{{ event.detailproblem }}</td> 
+        <td>{{ event.Bank }}</td> 
+        <td>{{ event.image }}</td> 
+        <td>{{ event.city }}</td> 
+        <td>{{ event.Connection }}</td>  
+        <td>{{ event.IncidentID }}</td> 
+        <td>{{ event.DownTime }}</td> 
+        <td>{{ event.ReportToDepartment }}</td> 
+        <td>{{ event.Assign_to_name1 }}</td> 
+        <td>{{ event.Assign_to_name2 }}</td> 
+        <td>{{ event.Assign_to_name3 }}</td> 
+        <td>{{ event.Assign_to_name4 }}</td> 
+        <td>{{ event.Assigng_to_others }}</td> 
+        <td>{{ event.SMS }}</td> 
+        <td>{{ event.description }}</td> 
+        <td>{{ event.reson }}</td>
+        <td>{{ event.Expert1 }}</td>
+        <td>{{ event.Status_Of_Expert1 }}</td>
+        <td>{{ event.Expert2 }}</td>
+        <td>{{ event.Status_Of_Expert2 }}</td>
+        <td>{{ event.Expert3 }}</td>
+        <td>{{ event.Status_Of_Expert3 }}</td>
+        <td>{{ event.Expert4 }}</td>
+        <td>{{ event.Status_Of_Expert4 }}</td>
+        <td>{{ event.Expert5 }}</td>
+        <td>{{ event.Status_Of_Expert5 }}</td>
+        <td>{{ event.Expert6 }}</td>
+        <td>{{ event.Status_Of_Expert6 }}</td>
+        <td>{{ event.Expert7 }}</td>
+        <td>{{ event.Status_Of_Expert7 }}</td>
+        <td>{{ event.Expert8 }}</td>
+        <td>{{ event.Status_Of_Expert8 }}</td>
+        <td>{{ event.Expert9 }}</td>
+        <td>{{ event.Status_Of_Expert9 }}</td>
+        <td>{{ event.Expert10 }}</td>
+        <td>{{ event.Status_Of_Expert10 }}</td>
+        <td>{{ event.Expert11 }}</td>
+        <td>{{ event.Status_Of_Expert11 }}</td>
+        <td>{{ event.Expert12 }}</td>
+        <td>{{ event.Status_Of_Expert12 }}</td>
+        <td>{{ event.Status_Of_problem }}</td>
+        <td>  
+            <a href="/eventedit/{{ event.id }}"><span class="button" >Edit</span></a>  
+            
+            <a href="/eventdelete/{{ event.id }}"><span class="del-button" >Delete</span></a>  
+            
+        </td>  
+    </tr>  
+{% endfor %}  
+    </tbody>  
+</table>  
+<br>  
+<br>  
+<center><a href="/event" class="button">Add New Record</a></center>  
+</body>  
+</html> 
+{% endblock %} 
