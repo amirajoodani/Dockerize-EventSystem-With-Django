@@ -44,7 +44,7 @@ class EventUpdateView(UpdateView):
     template_name = 'eventedit.html'
     #form = 'EventForm'
     model = EventKindofProblem
-    success_url ="/eventlist"
+    success_url ="/eventlist "
 
 
 
@@ -84,7 +84,7 @@ def eventupdate(request, id):
 def eventlist(request):
     events = EventKindofProblem.objects.all()
     myFilter=eventfilter(request.GET,queryset=events)
-    myevent=myFilter.qs
+    events=myFilter.qs
     form=EventForm()
     context ={'events':events ,'myFilter':myFilter}
     return render(request,'eventlist.html',context)
