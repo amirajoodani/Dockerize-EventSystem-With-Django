@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'log',
     'django_jalali',
     'jalali_date',
+    'django_filters',
 ]
 
 # default settings
@@ -147,9 +148,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-LANGUAGE_CODE = 'fa-ir'
+LANGUAGE_CODE = 'en-us'
 import locale
 locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
+
+CACHES = {
+        "default":{
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            },
+            "KEY_PREFIX":"SADADLOG"
+        }
+}

@@ -2,8 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}event{% endblock %}</title>
+  <title>{% block title %}LOG MGMT{% endblock %}</title>
+  
   {% load static %}
+  <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 {% if user.is_authenticated %}
@@ -12,7 +14,9 @@
     <a   class="logo">Event system</a>
     <div class="header-right">
       <a href="{% url 'eventlist' %}" class=button>eventlist</a>
+      
       <a href="{% url 'event' %}" class=button>event</a>
+      <a href="{% url 'responsetimelist' %}" class=button>responsetimelist</a>
       <a href="{% url 'logout' %}" class="logout-button">Log Out</a>
 
     </div>

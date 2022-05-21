@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} ResponseTimes {% endblock %}
+{% load static %}
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post" action="/responsetimelist/">
+    {% csrf_token %}
+    {% for field in fm %}
+      <p>
+        {{ field.start_date }}<br>
+        {{ field }}
+        
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
+{% endblock %}

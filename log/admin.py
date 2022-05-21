@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EventKindofProblem , EventMainProblem , EventDetailProblem , assign_to ,APNIrancell,ResponseTime, Bank , city ,Connection,NoAnswerCall, Report_To , Other_Organization ,expert ,Push_Organization ,E1MPLS,Push,Access
+from .models import EventKindofProblem , EventMainProblem , EventDetailProblem , IrancellNumber,year,day,mounth,hour,minute,assign_to ,APNIrancell,ResponseTime, Bank , city ,Connection,NoAnswerCall, Report_To , Other_Organization ,expert ,Push_Organization ,E1MPLS,Push,Access
 from django_jalali.admin.filters import JDateFieldListFilter
 import django_jalali.admin as jadmin
 
@@ -16,7 +16,7 @@ class EventDetailProblemAdmin(admin.ModelAdmin):
 admin.site.register(EventDetailProblem,EventDetailProblemAdmin)
 
 class EventKindofProblemAdmin(admin.ModelAdmin):
-  list_filter = ('start_date','end_date')
+  list_filter = ('day_of_start','day_of_end')
   list_display = ('id', 'name', 'status','description')
   search_fields = ['name','status']
 admin.site.register(EventKindofProblem,EventKindofProblemAdmin)
@@ -104,6 +104,43 @@ class APNIrancellAdmin(admin.ModelAdmin):
   list_display = ('date','date')
   search_fields = ['date']
 admin.site.register(APNIrancell,APNIrancellAdmin)
+
+class IrancellNumberAdmin(admin.ModelAdmin):
+  list_filter = ('number','number')
+  list_display = ( 'number','number')
+  search_fields = ['number']
+admin.site.register(IrancellNumber,IrancellNumberAdmin)
+
+class yearAdmin(admin.ModelAdmin):
+  list_filter = ('year','year')
+  list_display = ( 'year','year')
+  search_fields = ['year']
+admin.site.register(year,yearAdmin)
+
+class dayAdmin(admin.ModelAdmin):
+  list_filter = ('day','day')
+  list_display = ( 'day','day')
+  search_fields = ['day']
+admin.site.register(day,dayAdmin)
+
+class mounthAdmin(admin.ModelAdmin):
+  list_filter = ('mounth','mounth')
+  list_display = ( 'mounth','mounth')
+  search_fields = ['mounth']
+admin.site.register(mounth,mounthAdmin)
+
+class hourAdmin(admin.ModelAdmin):
+  list_filter = ('hour','hour')
+  list_display = ( 'hour','hour')
+  search_fields = ['hour']
+admin.site.register(hour,hourAdmin)
+
+class minuteAdmin(admin.ModelAdmin):
+  list_filter = ('minute','minute')
+  list_display = ( 'minute','minute')
+  search_fields = ['minute']
+admin.site.register(minute,minuteAdmin)
+
 
 
 
