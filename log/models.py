@@ -11,6 +11,23 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
 from django.contrib.auth.models import User
+from simple_history.models import HistoricalRecords
+import pint
+from django.db.models import F
+
+
+
+def validate_file_extension (value):
+    import os
+    from django.core.exceptions import ValidationError
+    filesize = value.file.size
+    megabyte_limit = 6.0
+    ext=os.path.splitext(value.name)[1]
+    valid_extensions=['.jpg','.png','.jpng','.rar','zip','7z']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('unsoppuetrd file format')
+    if filesize > megabyte_limit*1024*1024:
+        raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
     
 class EventMainProblem(models.Model):
@@ -75,7 +92,7 @@ class year(models.Model):
         return self.year
 
 class mounth(models.Model):
-    mounth=models.CharField(max_length=30,null=True,blank=True)
+    mounth=models.CharField(max_length=300,null=True,blank=True)
     def __str__(self):
         return self.mounth
 
@@ -95,12 +112,12 @@ class minute(models.Model):
         return self.minute
     
 class EventKindofProblem(models.Model):
-    name =  models.CharField(max_length=255)
+    #name =  models.CharField(max_length=255,null=True,blank=True)
     #owner = models.ForeignKey('auth.User',on_delete=models.RESTRICT)
     #start_date = jmodels.jDateTimeField(null=True,blank=True)
     #end_date = jmodels.jDateTimeField(null=True,blank=True)
     day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    mounth_of_start = models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
@@ -109,13 +126,15 @@ class EventKindofProblem(models.Model):
     year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
     hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
     minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    
     objects = jmodels.jManager()
+
     status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'),('None','None'))
-    status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
+    #status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
     mainproblem = models.ForeignKey(EventMainProblem,on_delete=models.SET_NULL,null=True)
     detailproblem = models.ForeignKey(EventDetailProblem,on_delete=models.SET_NULL,null=True)
     Bank= models.ForeignKey(Bank,on_delete=models.SET_NULL,null=True,blank=True)
-    image = models.ImageField(upload_to='media',null=True , blank=True)
+    image = models.FileField(upload_to='media',null=True , blank=True,validators=[validate_file_extension])
     city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
     Connection=models.ForeignKey(Connection,on_delete=models.SET_NULL,null=True,blank=True,related_name='Connection+')
     IncidentID=models.IntegerField(blank=True,null=True)
@@ -130,42 +149,60 @@ class EventKindofProblem(models.Model):
     SMS_choice = (('sms','SMS'),('nosms','NOSMS'))
     SMS  = models.CharField(choices=SMS_choice,max_length=10,null=True,blank=True)
     description = models.TextField(max_length=255)
-    reson = models.TextField(max_length=255)
-    Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'),('None','None'))
-    Expert1 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert2 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert3 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert4 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert5 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert6 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert7 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert8 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert9 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert10 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert11 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert12 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
-    Status_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #reson = models.TextField(max_length=255)
+    #Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'),('None','None'))
+    #Expert1 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert2 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert3 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert4 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert5 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert6 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert7 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert8 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert9 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert10 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert11 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert12 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
     problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'),('None','None'))
-    Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
-    def __str__(self):
-        return self.name
+    #Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
+    history = HistoricalRecords()
+    def __int__(self):
+        return self.id
     def get_absolute_url(self):
         return ('eventlist')
     class Meta:  
-        db_table = "event"  
+        db_table = "event" 
+    @property
+    def deltatime(self):
+        #self.year_of_end=None
+        #self.year_of_start=None
+        #self.mounth_of_end=None
+        #self.mounth_of_start=None
+        #day_of_end=None
+        #day_of_start=None
+        #self.hour_of_end=None
+        #self.hour_of_start=None
+        #self.minute_of_end=None
+        #self.minute_of_start=None
+        #deltayear= int(self.year_of_end or 0) - int(self.year_of_start or 0)
+        #deltaday=int(self.day_of_end or 0) - int(self.day_of_start or 0)
+        return 41
+    
 
 class E1MPLS(models.Model):
+    name =  models.CharField(max_length=255)
     start_date = jmodels.jDateTimeField()
     end_date = jmodels.jDateTimeField(null=True,blank=True) 
     status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'))
@@ -174,72 +211,20 @@ class E1MPLS(models.Model):
     city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
     IncidentID=models.IntegerField(blank=True,null=True)
     description = models.TextField(max_length=255)
-    Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'))
-    Expert1 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert2 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert3 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert4 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert5 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert6 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert7 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert8 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert9 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert10 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert11 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert12 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'))
-    Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
+    
     def __str__(self):
         return self.name
     class Meta:  
         db_table = "E1MPLS"  
 
 class Push(models.Model):
+    name =  models.CharField(max_length=255)
     start_date = jmodels.jDateTimeField()
     end_date = jmodels.jDateTimeField(null=True,blank=True)
     status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'))
     status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
     organization=models.ForeignKey(Push_Organization,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     description = models.TextField(max_length=255)
-    Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'))
-    Expert1 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert2 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert3 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert4 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert5 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert6 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert7 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert8 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert9 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert10 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert11 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert12 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'))
-    Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
     def __str__(self):
         return self.name
     class Meta:  
@@ -252,34 +237,9 @@ class Access(models.Model):
     expertise=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
     reson = models.TextField(max_length=255)
     Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'))
-    Expert1 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert2 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert3 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert4 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert5 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert6 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert7 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert8 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert9 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert10 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert11 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    Expert12 = models.ForeignKey(expert,on_delete=models.SET_NULL,null=True,blank=True,related_name='expert+')
-    Staus_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
-    problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'))
-    Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
+    
     def __str__(self):
-        return self.name
+        return self.boss
     class Meta:  
         db_table = "Access"  
 

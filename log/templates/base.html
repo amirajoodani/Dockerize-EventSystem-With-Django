@@ -1,33 +1,38 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}LOG MGMT{% endblock %}</title>
   
+  <title>{% block title %}LOG MGMT{% endblock %}</title>
   {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
-{% if user.is_authenticated %}
 <body>
-  <div class="header">
-    <a   class="logo">Event system</a>
-    <div class="header-right">
-      <a href="{% url 'eventlist' %}" class=button>eventlist</a>
-      
-      <a href="{% url 'event' %}" class=button>event</a>
-      <a href="{% url 'responsetimelist' %}" class=button>responsetimelist</a>
-      <a href="{% url 'logout' %}" class="logout-button">Log Out</a>
+{% block content %}{% endblock %}
+{% if user.is_authenticated %}
 
-    </div>
-  </div>
-   <div id="body">
-    {% endif %}
-   {% block content %}{% endblock %}
-  </div>
-  <div>
-    
-  </div>
+
+<aside>
+  <p> Sadad Log  </p>
+    <i class="fa fa-user-o" aria-hidden="true"></i>
+    <a href="{% url 'eventlist' %}">EventList</a>
+  </a>
+ 
+    <i class="fa fa-laptop" aria-hidden="true"></i>
+    <a href="{% url 'event' %}" >Event</a>
+  </a>
+ 
+    <i class="fa fa-clone" aria-hidden="true"></i>
+    <a href="{% url 'logout' %}">Log Out</a>
+  </a>
+  
+</aside>
+
+{% endif %}
 
 </body>
 </html>

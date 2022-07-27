@@ -11,6 +11,41 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import ldap
+from django_auth_ldap.config import LDAPSearch
+
+AUTH_LDAP_SERVER_URI = 'ldap://192.168.1.177'
+AUTH_LDAP_BIND_DN = "CN=bind,CN=Users,DC=spsplan,DC=local"
+AUTH_LDAP_BIND_PASSWORD = "aA@@135792468"
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+            "dc=spsplan,dc=local", ldap.SCOPE_SUBTREE, "sAMAccountName=%(user)s"
+            )
+
+AUTH_LDAP_USER_ATTR_MAP = {
+            "username": "sAMAccountName",
+                "first_name": "givenName",
+                    "last_name": "sn",
+                        "email": "mail",
+}
+from django_auth_ldap.config import ActiveDirectoryGroupType
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+            "dc=spsplan,dc=local", ldap.SCOPE_SUBTREE, "(objectCategory=Group)"
+            )
+AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+            "is_superuser": "CN=NOCLogApp,CN=Users,DC=SPSPLAN,DC=LOCAL",
+            "is_staff": "CN=NOCLogApp,CN=Users,DC=SPSPLAN,DC=LOCAL",
+            }
+AUTH_LDAP_FIND_GROUP_PERMS = True
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
+
+AUTHENTICATION_BACKENDS = [
+            'django_auth_ldap.backend.LDAPBackend',
+                'django.contrib.auth.backends.ModelBackend',
+]
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,13 +60,13 @@ SECRET_KEY = 'ifn=2r$0_zb+l%e*-!3*o*pt+g!lv@%lt%9!k+e34i#fjzbqaz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.181']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -41,8 +76,16 @@ INSTALLED_APPS = [
     'django_jalali',
     'jalali_date',
     'django_filters',
+    'simple_history',
+    'mathfilters',
+    'jet',
+    'jet.dashboard',
+    'django.contrib.admin',
+    'crispy_forms',
+    
+    
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # default settings
 JALALI_DATE_DEFAULTS = {
    'Strftime': {
@@ -77,6 +120,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'sadadlog.urls'
@@ -148,6 +192,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL = 'home'

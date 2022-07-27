@@ -1,158 +1,166 @@
-{% extends 'base.html' %}
-{% block title %} EventList {% endblock %}
+
+
 {% block content %}
+{% load mathfilters %}
 <!DOCTYPE html>  
 <html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>Eventlist</title>  
-     {% load static %}  
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>  
-</head>  
-<body> 
-    <form method="get">
-        {{ myFilter.form }}
-        <button type="submit" class="button">Search</button>
-      </form>
+   <head>  
+     <meta charset="UTF-8">   
+      {% load static %}  
+     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>  
+     
+   </head>
+   <body>
+       <div id="wrapper">
+            <div id="div1">
+                <aside>
+                    <p> Sadad Log  </p>
+                      <i class="fa fa-user-o" aria-hidden="true"></i>
+                      <a href="{% url 'eventlist' %}">EventList</a>
+                    </a>
+                
+                      <i class="fa fa-laptop" aria-hidden="true"></i>
+                      <a href="{% url 'event' %}" >Event</a>
+                    </a>
+                
+                      <i class="fa fa-clone" aria-hidden="true"></i>
+                      <a href="{% url 'logout' %}">Log Out</a>
+                    </a>
+                 
+                  </aside>  
+            </div>
+            <div id="div2">
+                <form method="get">
+                <div>
+                    <div>
+                            {{ myFilter.form.as_ul  }}
+                        <button type="submit" class="button">Search</button>
+                    </div>
+                    <div>
+                      <a class="button" href="{% url 'eventpdf' %}"> PDF </a>
+                      <a class="button" href="{% url 'get_csv' %}"> csv </a>
+                    </div>
+              
+                </form>
+                <div >
+                    <table class="table table-striped table-bordered table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                              <th scope="col"> شناسه </th>  
+                                <th scope="col"> روز شروع</th>  
+                                <th scope="col"> ماه شروع</th>  
+                                <th scope="col"> سال شروع </th>
+                                <th scope="col">  ساعت شروع</th>
+                                <th scope="col">  دقیقه شروع</th>
+                                <th scope="col"> روز پایان</th>  
+                                <th scope="col">ماه پایان</th>  
+                                <th scope="col"> سال  پایان</th>
+                                <th scope="col"> ساعت پایان</th>
+                                <th scope="col">دقیقه پایان </th>
+                                <th scope="col">مدت زمان  </th>
+                                <th scope="col">مشکل اصلی  </th>
+                                <th scope="col">جزییات  </th>
+                                <th scope="col">بانک </th>
+                                <th scope="col">تصویر </th>  
+                                <th scope="col">شهر </th>
+                                <th scope="col">نوع ارتباط </th>
+                                <th scope="col">IncidentID</th>
+                                <th scope="col">DownTime</th>
+                                <th scope="col">گزارش داده شده به واحد </th>
+                                <th scope="col">گزارش داده شده به فرد اول </th>
+                                <th scope="col">گزارش داده شده به فرد دوم</th>
+                                <th scope="col">گزارش داده شده به فرد سوم</th>
+                                <th scope="col">گزارش داده شده به فرد چهارم</th>
+                                <th scope="col">سایر</th>
+                                <th scope="col">SMS</th>
+                                <th scope="col">شرح وقایع</th>
+                                <th scope="col">اقدام</th>
+                                
+                              </tr>  
+                        </thead>
+                        <tbody>  
+                            {% for event in events %}  
+                               <tr>  
+                                <td>{{ event.id }}</td>
+                                <td>{{ event.day_of_start }}</td>  
+                                <td>{{ event.mounth_of_start }}</td>  
+                                <td>{{ event.year_of_start }}</td>  
+                                <td>{{ event.hour_of_start }}</td>  
+                                <td>{{ event.minute_of_start }}</td>  
+                                <td>{{ event.day_of_end }}</td>  
+                                <td>{{ event.mounth_of_end }}</td>  
+                                <td>{{ event.year_of_end }}</td>  
+                                <td>{{ event.hour_of_end }}</td>  
+                                <td>{{ event.minute_of_end }}</td>
+                                <td>{{event.deltatime}}</td>
+                               
+                                <td>{{ event.mainproblem }}</td> 
+                                <td>{{ event.detailproblem }}</td> 
+                                <td>{{ event.Bank }}</td> 
+                                <td>
+                                   {% if event.image %}
+                                       <a href="{{event.image.url}}" download="{{event.image.url}}">Download</a> 
+                                   {% endif %}
+                       
+                                </td>
+                                <td>{{ event.city }}</td> 
+                                <td>{{ event.Connection }}</td>  
+                                <td>{{ event.IncidentID }}</td> 
+                                <td>{{ event.DownTime }}</td> 
+                                <td>{{ event.ReportToDepartment }}</td> 
+                                <td>{{ event.Assign_to_name1 }}</td> 
+                                <td>{{ event.Assign_to_name2 }}</td> 
+                                <td>{{ event.Assign_to_name3 }}</td> 
+                                <td>{{ event.Assign_to_name4 }}</td> 
+                                <td>{{ event.Assigng_to_others }}</td> 
+                                <td>{{ event.SMS }}</td> 
+                                <td>{{ event.description }}</td>
+                                
 
-<table class="table table-striped table-bordered table-sm">  
-    <thead class="thead-dark">  
-    <tr>  
-        <th scope="col">نام رویداد </th> 
-        <th scope="col"> روز شروع</th>  
-        <th scope="col"> ماه شروع</th>  
-        <th scope="col"> سال شروع </th>
-        <th scope="col">  ساعت شروع</th>
-        <th scope="col">  دقیقه شروع</th>
-        <th scope="col"> روز پایان</th>  
-        <th scope="col">ماه پایان</th>  
-        <th scope="col"> سال  پایان</th>
-        <th scope="col"> ساعت پایان</th>
-        <th scope="col">دقیقه پایان </th>
-        <th scope="col">وضعیت </th>
-        <th scope="col">مشکل اصلی  </th>
-        <th scope="col">جزییات  </th>
-        <th scope="col">بانک </th>
-        <th scope="col">تصویر </th>  
-        <th scope="col">شهر </th>
-        <th scope="col">نوع ارتباط </th>
-        <th scope="col">IncidentID</th>
-        <th scope="col">DownTime</th>
-        <th scope="col">گزارش داده شده به واحد </th>
-        <th scope="col">گزارش داده شده به فرد اول </th>
-        <th scope="col">گزارش داده شده به فرد دوم</th>
-        <th scope="col">گزارش داده شده به فرد سوم</th>
-        <th scope="col">گزارش داده شده به فرد چهارم</th>
-        <th scope="col">سایر</th>
-        <th scope="col">SMS</th>
-        <th scope="col">شرح وقایع</th>
-        <th scope="col">دلیل (خلاصه)</th>
-        <th scope="col">کارشناس اول </th>
-        <th scope="col">وضعیت کارشناس اول </th>
-        <th scope="col">کارشناس دوم</th>
-        <th scope="col">وضعیت کارشناس دوم</th>
-        <th scope="col">کارشناس سوم</th>
-        <th scope="col">وضعیت کارشناس سوم</th>
-        <th scope="col">کارشناس چهارم</th>
-        <th scope="col">وضعیت کارشناس چهارم</th>
-        <th scope="col">کارشناس پنجم</th>
-        <th scope="col">وضعیت کارشناس پنجم</th>
-        <th scope="col">کارشناس ششم</th>
-        <th scope="col">وضعیت کارشناس ششم</th>
-        <th scope="col">کارشناس هفتم</th>
-        <th scope="col">وضعیت کارشناس هفتم</th>
-        <th scope="col">کارشناس هشتم</th>
-        <th scope="col">وضعیت کارشناس هشتم</th>
-        <th scope="col">کارشناس نهم</th>
-        <th scope="col">وضعیت کارشناس نهم</th>
-        <th scope="col">کارشناس دهم</th>
-        <th scope="col">وضعیت کارشناس دهم</th>
-        <th scope="col">کارشناس یازدهم</th>
-        <th scope="col">وضعیت کارشناس یازدهم</th>
-        <th scope="col">کارشناس دوازدهم</th>
-        <th scope="col">وضعیت کارشناس دوازدهم</th>
-        <th scope="col">وضعیت مشکل</th>
-        <th scope="col">اقدام</th>
-
-        
-        
-    </tr>  
-    </thead>  
-    <tbody>  
-{% for event in events %}  
-    <tr>  
-        <td>{{ event.name }}</td> 
-        <td>{{ event.day_of_start }}</td>  
-        <td>{{ event.mounth_of_start }}</td>  
-        <td>{{ event.year_of_start }}</td>  
-        <td>{{ event.hour_of_start }}</td>  
-        <td>{{ event.minute_of_start }}</td>  
-        <td>{{ event.day_of_end }}</td>  
-        <td>{{ event.mounth_of_end }}</td>  
-        <td>{{ event.year_of_end }}</td>  
-        <td>{{ event.hour_of_end }}</td>  
-        <td>{{ event.minute_of_end }}</td>   
-        <td>{{ event.status }}</td> 
-        <td>{{ event.mainproblem }}</td> 
-        <td>{{ event.detailproblem }}</td> 
-        <td>{{ event.Bank }}</td> 
-        <td>
-            {% if event.image %}
-                <a href="{{event.image.url}}" download="{{event.image.url}}">Download</a> 
-            {% endif %}
-
-        </td>
-        <td>{{ event.city }}</td> 
-        <td>{{ event.Connection }}</td>  
-        <td>{{ event.IncidentID }}</td> 
-        <td>{{ event.DownTime }}</td> 
-        <td>{{ event.ReportToDepartment }}</td> 
-        <td>{{ event.Assign_to_name1 }}</td> 
-        <td>{{ event.Assign_to_name2 }}</td> 
-        <td>{{ event.Assign_to_name3 }}</td> 
-        <td>{{ event.Assign_to_name4 }}</td> 
-        <td>{{ event.Assigng_to_others }}</td> 
-        <td>{{ event.SMS }}</td> 
-        <td>{{ event.description }}</td> 
-        <td>{{ event.reson }}</td>
-        <td>{{ event.Expert1 }}</td>
-        <td>{{ event.Status_Of_Expert1 }}</td>
-        <td>{{ event.Expert2 }}</td>
-        <td>{{ event.Status_Of_Expert2 }}</td>
-        <td>{{ event.Expert3 }}</td>
-        <td>{{ event.Status_Of_Expert3 }}</td>
-        <td>{{ event.Expert4 }}</td>
-        <td>{{ event.Status_Of_Expert4 }}</td>
-        <td>{{ event.Expert5 }}</td>
-        <td>{{ event.Status_Of_Expert5 }}</td>
-        <td>{{ event.Expert6 }}</td>
-        <td>{{ event.Status_Of_Expert6 }}</td>
-        <td>{{ event.Expert7 }}</td>
-        <td>{{ event.Status_Of_Expert7 }}</td>
-        <td>{{ event.Expert8 }}</td>
-        <td>{{ event.Status_Of_Expert8 }}</td>
-        <td>{{ event.Expert9 }}</td>
-        <td>{{ event.Status_Of_Expert9 }}</td>
-        <td>{{ event.Expert10 }}</td>
-        <td>{{ event.Status_Of_Expert10 }}</td>
-        <td>{{ event.Expert11 }}</td>
-        <td>{{ event.Status_Of_Expert11 }}</td>
-        <td>{{ event.Expert12 }}</td>
-        <td>{{ event.Status_Of_Expert12 }}</td>
-        <td>{{ event.Status_Of_problem }}</td>
-        <td>  
-            <a href="/eventedit/{{event.id}}"><span class="button" >Edit</span></a>  
+                               
+                                <td>  
+                                   <a href="/eventedit/{{event.id}}"><span class="button" >Edit</span></a>  
+                                   
+                                   <a href="/eventdelete/{{ event.id }}"><span class="del-button" >Delete</span></a>  
+                                   
+                                </td>
+                                
+                               </tr>  
+                            {% endfor %}
+                          
+                              
+                             
+                        </tbody>
+                    </table>
+    
+                    
+                     
+              </div>
+                
+                
+            </div>
             
-            <a href="/eventdelete/{{ event.id }}"><span class="del-button" >Delete</span></a>  
             
-        </td>  
-    </tr>  
-{% endfor %}  
-    </tbody>  
-</table>  
-<br>  
-<br>  
-<center><a href="/event" class="button">Add New Record</a></center>  
-</body>  
+            
+       </div>
+       
+   </body>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </html> 
 {% endblock %} 

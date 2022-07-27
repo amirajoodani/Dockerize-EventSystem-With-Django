@@ -2,6 +2,10 @@ from django.contrib import admin
 from .models import EventKindofProblem , EventMainProblem , EventDetailProblem , IrancellNumber,year,day,mounth,hour,minute,assign_to ,APNIrancell,ResponseTime, Bank , city ,Connection,NoAnswerCall, Report_To , Other_Organization ,expert ,Push_Organization ,E1MPLS,Push,Access
 from django_jalali.admin.filters import JDateFieldListFilter
 import django_jalali.admin as jadmin
+from simple_history.admin import SimpleHistoryAdmin
+#from utils.excel_export import ExcelExportAdmin
+
+#admin.site.register(EventKindofProblem,SimpleHistoryAdmin)
 
 class EventMainProblemAdmin(admin.ModelAdmin):
   list_filter = ('name','name')
@@ -17,8 +21,8 @@ admin.site.register(EventDetailProblem,EventDetailProblemAdmin)
 
 class EventKindofProblemAdmin(admin.ModelAdmin):
   list_filter = ('day_of_start','day_of_end')
-  list_display = ('id', 'name', 'status','description')
-  search_fields = ['name','status']
+  list_display = ( 'id','day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','SMS','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others')
+  search_fields = ['day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','SMS','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others']
 admin.site.register(EventKindofProblem,EventKindofProblemAdmin)
 
 class assign_toAdmin(admin.ModelAdmin):
@@ -135,11 +139,13 @@ class hourAdmin(admin.ModelAdmin):
   search_fields = ['hour']
 admin.site.register(hour,hourAdmin)
 
-class minuteAdmin(admin.ModelAdmin):
-  list_filter = ('minute','minute')
-  list_display = ( 'minute','minute')
-  search_fields = ['minute']
-admin.site.register(minute,minuteAdmin)
+#class minuteAdmin(admin.ModelAdmin):
+#  list_filter = ('minute','minute')
+#  list_display = ( 'minute','minute')
+#  search_fields = ['minute']
+#admin.site.register(minute,minuteAdmin)
+
+admin.site.register( minute,SimpleHistoryAdmin)
 
 
 

@@ -1,430 +1,231 @@
+
 <!DOCTYPE html>
-{% extends 'base.html' %}
+
 {% block content %}
 {% load jformat %}
 {% load static %}
-{% csrf_token %} 
+{% csrf_token %}
+{% load crispy_forms_tags %}
+
 <html lang="en">  
   <head>  
      <meta charset="UTF-8">  
      <title>event</title>  
-     <link rel="stylesheet" href="{% static 'css/event.css' %}"/>  
+     <link rel="stylesheet" href="{% static 'css/event.css' %}"/> 
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
   </head>
-    
-  <form method="POST" class="post-form" action="/event/{{ event.id }}" enctype="multipart/form-data"> 
-    {% csrf_token %} 
-    <div class="container">  
-<br>  
-    <div class="form-group row">  
-    <label class="col-sm-1 col-form-label"></label>  
-    <div class="col-sm-4">  
-    <h3>Enter Event </h3>  
-    </div>  
-  </div>  
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نام رویداد (*)</label>  
-    <div class="col-sm-4">  
-      {{ form.name }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label"> (*)روز شروع </label>  
-    <div class="col-sm-4">  
-      {{ form.day_of_start }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">(*)ماه شروع  </label>  
-    <div class="col-sm-4">  
-      {{ form.mounth_of_start }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">(*)سال شروع </label>  
-    <div class="col-sm-4">  
-      {{ form.year_of_start }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">(*)ساعت شروع</label>  
-    <div class="col-sm-4">  
-      {{ form.hour_of_start }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">(*)دقیقه شروع</label>  
-    <div class="col-sm-4">  
-      {{ form.minute_of_start }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label"> روز پایان </label>  
-    <div class="col-sm-4">  
-      {{ form.day_of_end }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">ماه پایان  </label>  
-    <div class="col-sm-4">  
-      {{ form.mounth_of_end }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">سال پایان </label>  
-    <div class="col-sm-4">  
-      {{ form.year_of_end }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">ساعت پایان</label>  
-    <div class="col-sm-4">  
-      {{ form.hour_of_end }}  
-    </div>  
-  </div>  
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">دقیقه پایان</label>  
-    <div class="col-sm-4">  
-      {{ form.minute_of_end }}  
-    </div>  
-  </div>  
-
   
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت</label>  
-    <div class="col-sm-4">  
-      {{ form.status }}  
-    </div>
- </div> 
+  <div id="eventtotal">
 
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">مشکل اصلی (*)</label>  
-    <div class="col-sm-4">  
-      {{ form.mainproblem }}  
-    </div>  
+        <div class="asideevent">
+          <aside>
+            <p> Sadad Log  </p>
+              <i class="fa fa-user-o" aria-hidden="true"></i>
+              <a href="{% url 'eventlist' %}">EventList</a>
+            </a>
+           
+              <i class="fa fa-laptop" aria-hidden="true"></i>
+              <a href="{% url 'event' %}" >Event</a>
+            </a>
+           
+              <i class="fa fa-clone" aria-hidden="true"></i>
+              <a href="{% url 'logout' %}">Log Out</a>
+            </a>
+            
+          </aside>
+        </div>
+
+        <div class="eventform">
+
+          <form method="POST" class="post-form" action="/event/{{ event.id }}" enctype="multipart/form-data"> 
+            {% csrf_token %} 
+             
+          <br>  
+          <div class="form-group row">  
+            <label class="col-sm-1 col-form-label"></label>  
+            <div class="col-sm-4">  
+            <h3>Enter Event </h3>  
+            </div>  
+          </div>  
+          {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ field.label }}</strong> : <span>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+          {% endif %}
+        
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label"> (*)روز شروع  </label>  
+            <div class="col-sm-4">  
+              {{ form.day_of_start | as_crispy_field }}  
+            </div>
+            <label class="col-sm-2 col-form-label">(*)ماه شروع  </label>  
+            <div class="col-sm-4">  
+              {{ form.mounth_of_start  | as_crispy_field }}  
+            </div> 
+            <label class="col-sm-2 col-form-label">(*)سال شروع </label>  
+            <div class="col-sm-4">  
+              {{ form.year_of_start  | as_crispy_field}}  
+            </div>
+            <label class="col-sm-2 col-form-label">(*)ساعت شروع</label>  
+            <div class="col-sm-4">  
+              {{ form.hour_of_start | as_crispy_field}}  
+            </div>
+            <label class="col-sm-2 col-form-label">(*)دقیقه شروع</label>  
+            <div class="col-sm-4">  
+              {{ form.minute_of_start | as_crispy_field}}  
+            </div>        
+          </div>  
+        
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label"> روز پایان </label>  
+            <div class="col-sm-4">  
+              {{ form.day_of_end | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">ماه پایان  </label>  
+            <div class="col-sm-4">  
+              {{ form.mounth_of_end | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">سال پایان </label>  
+            <div class="col-sm-4">  
+              {{ form.year_of_end | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">ساعت پایان</label>  
+            <div class="col-sm-4">  
+              {{ form.hour_of_end | as_crispy_field}}  
+            </div>
+            <label class="col-sm-2 col-form-label">دقیقه پایان</label>  
+            <div class="col-sm-4">  
+              {{ form.minute_of_end | as_crispy_field}}  
+            </div>     
+          </div>    
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">مشکل اصلی (*)</label>  
+            <div class="col-sm-4">  
+              {{ form.mainproblem | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">جزییات(*)</label>  
+            <div class="col-sm-4">  
+              {{ form.detailproblem | as_crispy_field}}  
+            </div>   
+          </div>
+        
+            
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">بانک : </label>  
+            <div class="col-sm-4">  
+              {{ form.Bank | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">تصویر یا فایل : </label>  
+            <div class="col-sm-4">  
+              {{ form.image | as_crispy_field}}  
+            </div>   
+          </div> 
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">شهر : </label>  
+            <div class="col-sm-4">  
+              {{ form.city | as_crispy_field}}  
+            </div> 
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">نوع ارتباط : </label>  
+            <div class="col-sm-4">  
+              {{ form.Connection | as_crispy_field}}  
+            </div>  
+          </div>  
+         </div> 
+        
+          <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">Incident ID</label>  
+            <div class="col-sm-4">  
+              {{ form.IncidentID | as_crispy_field}}  
+            </div>
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label"></label>  
+            <div class="col-sm-4">  
+               {{ form.DownTime  | as_crispy_field }}  
+            </div>    
+          </div> 
+        
+            
+          </div> 
+        
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">گزارش داده شده به واحد </label>  
+            <div class="col-sm-4">  
+              {{ form.ReportToDepartment | as_crispy_field}}  
+            </div>  
+          </div> 
+        
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">نام کارشناس اول </label>  
+            <div class="col-sm-4">  
+              {{ form.Assign_to_name1 | as_crispy_field}}  
+            </div>
+            <label class="col-sm-2 col-form-label">نام کارشناس دوم </label>  
+            <div class="col-sm-4">  
+              {{ form.Assign_to_name2 | as_crispy_field}}  
+            </div>
+          </div>
+            
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">نام کارشناس سوم </label>  
+            <div class="col-sm-4">  
+              {{ form.Assign_to_name3 | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">نام کارشناس چهارم  </label>  
+            <div class="col-sm-4">  
+              {{ form.Assign_to_name4 | as_crispy_field}}  
+            </div>           
+          </div>
+        
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">سایر</label>  
+            <div class="col-sm-4">  
+              {{ form.Assigng_to_others | as_crispy_field}}  
+            </div> 
+            <label class="col-sm-2 col-form-label">SMS</label>  
+            <div class="col-sm-4">  
+              {{ form.SMS | as_crispy_field}}  
+            </div>   
+          </div> 
+        
+             
+            <div class="form-group row">  
+            <label class="col-sm-2 col-form-label">توضیحات (*)</label>  
+            <div class="col-sm-4">  
+              {{ form.description | as_crispy_field}}  
+            </div>  
+          </div> 
+        
+          
+            
+            <br><br>
+            <div class="form-group row">  
+            <label class="col-sm-1 col-form-label"></label>  
+            <div class="col-sm-4">  
+            <button type="submit" class="button">Submit</button>  
+            </div>  
+          </div>  
+            </div> 
+            
+         </form> 
+
+        </div>
+
+
+
   </div>
 
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">جزییات(*)</label>  
-    <div class="col-sm-4">  
-      {{ form.detailproblem }}  
-    </div>  
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">بانک : </label>  
-    <div class="col-sm-4">  
-      {{ form.Bank }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">تصویر یا فایل : </label>  
-    <div class="col-sm-4">  
-      {{ form.image }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">شهر : </label>  
-    <div class="col-sm-4">  
-      {{ form.city }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نوع ارتباط : </label>  
-    <div class="col-sm-4">  
-      {{ form.Connection }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">Incident ID</label>  
-    <div class="col-sm-4">  
-      {{ form.IncidentID }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">DownTime</label>  
-    <div class="col-sm-4">  
-      {{ form.DownTime }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">گزارش داده شده به واحد </label>  
-    <div class="col-sm-4">  
-      {{ form.ReportToDepartment }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نام کارشناس اول </label>  
-    <div class="col-sm-4">  
-      {{ form.Assign_to_name1 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نام کارشناس دوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Assign_to_name2 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نام کارشناس سوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Assign_to_name3 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">نام کارشناس چهارم  </label>  
-    <div class="col-sm-4">  
-      {{ form.Assign_to_name4 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">سایر</label>  
-    <div class="col-sm-4">  
-      {{ form.Assigng_to_others }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">SMS</label>  
-    <div class="col-sm-4">  
-      {{ form.SMS }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">توضیحات (*)</label>  
-    <div class="col-sm-4">  
-      {{ form.description }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">دلیل (*)</label>  
-    <div class="col-sm-4">  
-      {{ form.reson }}  
-    </div>  
-  </div> 
-
-    
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس اول</label>  
-    <div class="col-sm-4">  
-      {{ form.Expert1 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس اول </label>  
-    <div class="col-sm-4">  
-      {{ form.Status_Of_Expert1 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس دوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert2 }}  
-    </div>
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس دوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Status_Of_Expert2 }}  
-    </div>  
-    </div> 
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس سوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert3 }}  
-    </div>  
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس سوم </label>  
-    <div class="col-sm-4">  
-      {{ form.Status_Of_Expert3 }}  
-    </div>  
-    </div> 
-  </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس چهارم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert4 }}  
-    </div>
-    </div> 
-  </div>  
-    
-    <div class="form-group row">  
-     <label class="col-sm-2 col-form-label">وضعیت کارشناس چهارم : </label>  
-     <div class="col-sm-4">  
-      {{ form.Status_Of_Expert4 }}  
-     </div>  
-     </div> 
-   </div> 
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس پنجم : </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert5 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس پنجم : </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert5 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس ششم : </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert6 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس ششم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert6 }}  
-    </div>  
-    </div> 
-  </div>
-
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس هفتم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert7 }}  
-    </div>  
-  </div>
-  
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس هفتم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert7 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس هشتم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert8 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس هشتم : </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert8 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس نهم :  </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert9 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس نهم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert9 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس دهم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert10 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس دهم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert10 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس یازدهم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert11 }}  
-    </div>  
-  </div> 
-
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس یازدهم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert11 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">کارشناس دوازدهم </label>  
-    <div class="col-sm-4">  
-      {{ form.Expert12 }}  
-    </div>  
-  </div>
-  
-  <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت کارشناس دوازدهم </label>  
-    <div class="col-sm-4">  
-     {{ form.Status_Of_Expert12 }}  
-    </div>  
-    </div> 
-  </div>
-
-    <div class="form-group row">  
-    <label class="col-sm-2 col-form-label">وضعیت مشکل : </label>  
-    <div class="col-sm-4">  
-      {{ form.Status_Of_problem }}  
-    </div>  
-  </div> 
-    
-    <br><br>
-    <div class="form-group row">  
-    <label class="col-sm-1 col-form-label"></label>  
-    <div class="col-sm-4">  
-    <button type="submit" class="button">Submit</button>  
-    </div>  
-  </div>  
-    </div> 
-    
-</form>  
+ 
 {% endblock %}
  
 </html>

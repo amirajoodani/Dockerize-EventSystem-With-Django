@@ -28,6 +28,8 @@ from log import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^jet/', include('jet.urls', 'jet')),
+    url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('',include("log.urls")),
