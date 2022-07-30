@@ -6,6 +6,7 @@ from pyexpat import model
 from random import choices
 from django.db import models
 from django_jalali.db import models as jmodels
+from django_jalali.db.models import jDateTimeField
 from django.db.models import F
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -115,6 +116,7 @@ class EventKindofProblem(models.Model):
     #name =  models.CharField(max_length=255,null=True,blank=True)
     #owner = models.ForeignKey('auth.User',on_delete=models.RESTRICT)
     #start_date = jmodels.jDateTimeField(null=True,blank=True)
+    #start_date2 = jDateTimeField()
     #end_date = jmodels.jDateTimeField(null=True,blank=True)
     day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
@@ -177,6 +179,7 @@ class EventKindofProblem(models.Model):
     #Status_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
     problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'),('None','None'))
     #Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
+    #export_to_csv=models.BooleanField(default=False)
     history = HistoricalRecords()
     def __int__(self):
         return self.id
@@ -186,6 +189,7 @@ class EventKindofProblem(models.Model):
         db_table = "event" 
     @property
     def deltatime(self):
+        
         #self.year_of_end=None
         #self.year_of_start=None
         #self.mounth_of_end=None
@@ -196,10 +200,18 @@ class EventKindofProblem(models.Model):
         #self.hour_of_start=None
         #self.minute_of_end=None
         #self.minute_of_start=None
+        #self.delta=int(self.minute_of_end)-int(self.minute_of_start)
         #deltayear= int(self.year_of_end or 0) - int(self.year_of_start or 0)
         #deltaday=int(self.day_of_end or 0) - int(self.day_of_start or 0)
-        return 41
-    
+        #deltatime = int(minute_of_end or 0 )-int(self.minute_of_start or 0)
+        #duration = EventKindofProblem.objects.annotate(delta=(F(int('minute_of_end'))) - (F(int('minute_of_start'))))
+        #deltatime = EventKindofProblem.objects.minute_of_end - EventKindofProblem.objects.minute_of_start
+        return 42
+    #def duration(self):
+    #    duration = EventKindofProblem.objects.annotate(duration = F('minute_of_end') - F('minute_of_start'))
+    #    return  duration
+    # EventKindofProblem.objects.annotate(duration=F('minute_of_end') - F('minute_of_start'))
+
 
 class E1MPLS(models.Model):
     name =  models.CharField(max_length=255)
@@ -280,6 +292,96 @@ class APNIrancell(models.Model):
         return self.date
     class Meta:  
         db_table = "APNIrancell"  
+
+
+class EventKindofProblemHistory(models.Model):
+    #name =  models.CharField(max_length=255,null=True,blank=True)
+    #owner = models.ForeignKey('auth.User',on_delete=models.RESTRICT)
+    #start_date = jmodels.jDateTimeField(null=True,blank=True)
+    #end_date = jmodels.jDateTimeField(null=True,blank=True)
+    day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    day_of_end = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    mounth_of_end= models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    
+    #objects = jmodels.jManager()
+
+    status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'),('None','None'))
+    #status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
+    mainproblem = models.ForeignKey(EventMainProblem,on_delete=models.SET_NULL,null=True,blank=True)
+    detailproblem = models.ForeignKey(EventDetailProblem,on_delete=models.SET_NULL,null=True,blank=True)
+    Bank= models.ForeignKey(Bank,on_delete=models.SET_NULL,null=True,blank=True)
+    image = models.FileField(upload_to='media',null=True , blank=True,validators=[validate_file_extension])
+    city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
+    Connection=models.ForeignKey(Connection,on_delete=models.SET_NULL,null=True,blank=True,related_name='Connection+')
+    IncidentID=models.IntegerField(blank=True,null=True)
+    DownTime_choice = (('no','NO'),('yes','YES'))
+    DownTime  = models.CharField(choices=DownTime_choice,max_length=4,null=True,blank=True)
+    ReportToDepartment= models.ForeignKey(Report_To,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    Assign_to_name1=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    Assign_to_name2=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    Assign_to_name3=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    Assign_to_name4=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    Assigng_to_others=models.ForeignKey(Other_Organization,on_delete=models.SET_NULL,null=True,blank=True , related_name='auth.user+')
+    SMS_choice = (('sms','SMS'),('nosms','NOSMS'))
+    SMS  = models.CharField(choices=SMS_choice,max_length=10,null=True,blank=True)
+    description = models.TextField(max_length=255)
+    #reson = models.TextField(max_length=255)
+    #Status_Of_People = (('present','PRESENT'),('registrator','REGISTRATOR'),('completor','COMPLETOR'),('remote','REMOTE'),('None','None'))
+    #Expert1 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert1 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert2 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert2 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert3 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert3 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert4 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert4 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert5 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert5 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert6 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert6 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert7 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert7 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert8 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert8 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert9 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert9 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert10 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert10 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert11 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert11 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    #Expert12 = models.ForeignKey(expert,on_delete=models.DO_NOTHING,null=True,blank=True,related_name='expert+')
+    #Status_Of_Expert12 = models.CharField(choices=Status_Of_People,max_length=25,null=True,blank=True)
+    problem_status_choice = (('internal','INTERNAL'),('external','EXTERNAL'),('None','None'))
+    #Status_Of_problem  = models.CharField(choices=problem_status_choice,max_length=10,null=True,blank=True)
+    history = HistoricalRecords()
+    def __int__(self):
+        return self.id
+    def get_absolute_url(self):
+        return ('eventlist')
+    class Meta:  
+        db_table = "eventhistory" 
+    @property
+    def deltatime(self):
+        #self.year_of_end=None
+        #self.year_of_start=None
+        #self.mounth_of_end=None
+        #self.mounth_of_start=None
+        #day_of_end=None
+        #day_of_start=None
+        #self.hour_of_end=None
+        #self.hour_of_start=None
+        #self.minute_of_end=None
+        #self.minute_of_start=None
+        #deltayear= int(self.year_of_end or 0) - int(self.year_of_start or 0)
+        #deltaday=int(self.day_of_end or 0) - int(self.day_of_start or 0)
+        return 41
 
 
 

@@ -49,7 +49,7 @@
     padding-left: 0px;
     padding-top: 0px;
     margin: 0px 0px 0px 0px;
-    height: 250vh;
+    height: 100vh;
     background-image: linear-gradient(30deg , #0048bd, #44a7fd);
     border-top-right-radius: 50px;
     margin-left: -20px;
@@ -63,9 +63,10 @@ aside {
     padding-left: 0px;
     padding-top: 0px;
     margin: 0px 0px 0px 0px;
-    height: 100vh;
+    height: 40vh;
     background-image: linear-gradient(30deg , #0048bd, #44a7fd);
     border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     
     
   }

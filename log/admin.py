@@ -3,6 +3,7 @@ from .models import EventKindofProblem , EventMainProblem , EventDetailProblem ,
 from django_jalali.admin.filters import JDateFieldListFilter
 import django_jalali.admin as jadmin
 from simple_history.admin import SimpleHistoryAdmin
+from django.utils.html import format_html
 #from utils.excel_export import ExcelExportAdmin
 
 #admin.site.register(EventKindofProblem,SimpleHistoryAdmin)
@@ -19,11 +20,11 @@ class EventDetailProblemAdmin(admin.ModelAdmin):
   search_fields = ['name']
 admin.site.register(EventDetailProblem,EventDetailProblemAdmin)
 
-class EventKindofProblemAdmin(admin.ModelAdmin):
-  list_filter = ('day_of_start','day_of_end')
-  list_display = ( 'id','day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','SMS','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others')
-  search_fields = ['day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','SMS','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others']
-admin.site.register(EventKindofProblem,EventKindofProblemAdmin)
+#class EventKindofProblemAdmin(admin.ModelAdmin):
+  #list_filter = ('day_of_start','day_of_end')
+  #list_display = ('day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assigng_to_others')
+  #search_fields = ['day_of_start','mounth_of_start','year_of_start','day_of_end','mounth_of_end','year_of_end','SMS','mainproblem','detailproblem','Bank','image','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others']
+#admin.site.register(EventKindofProblem,EventKindofProblemAdmin)
 
 class assign_toAdmin(admin.ModelAdmin):
   list_filter = ('name','name')
@@ -145,7 +146,30 @@ admin.site.register(hour,hourAdmin)
 #  search_fields = ['minute']
 #admin.site.register(minute,minuteAdmin)
 
-admin.site.register( minute,SimpleHistoryAdmin)
+#admin.site.register(EventKindofProblem,SimpleHistoryAdmin)
+
+class EventKindofProblemHistoryAdmin(SimpleHistoryAdmin):
+  history_list_display = ["changed_fields","list_changes"]
+    
+  def changed_fields(self, obj):
+        if obj.prev_record:
+            delta = obj.diff_against(obj.prev_record)
+            return delta.changed_fields
+        return None
+
+  def list_changes(self, obj):
+        fields = ""
+        if obj.prev_record:
+            delta = obj.diff_against(obj.prev_record)
+
+            for change in delta.changes:
+                fields += str("<strong>{}</strong> changed from <span style='background-color:#ffb5ad'>{}</span> to <span style='background-color:#b3f7ab'>{}</span> . <br/>".format(change.field, change.old, change.new))
+            return format_html(fields)
+        return None
+
+
+admin.site.register(EventKindofProblem,EventKindofProblemHistoryAdmin)
+
 
 
 

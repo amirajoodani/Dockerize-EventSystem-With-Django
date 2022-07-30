@@ -1,6 +1,7 @@
 from asyncio import events
 from cmath import log
 from multiprocessing import Event
+from typing_extensions import Required
 from django.shortcuts import render,redirect ,HttpResponseRedirect 
 from .models import EventKindofProblem
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from django.contrib import messages
 from django.views.generic.edit import UpdateView
 from django.http import FileResponse
 import io
+from django.views.generic import FormView
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
@@ -23,6 +25,8 @@ from .filters import eventfilter
 from django.db.models import F
 import djqscsv
 from excel_response import ExcelResponse
+import csv 
+from django.urls import reverse_lazy
 
 
 
@@ -36,7 +40,6 @@ def event(request):
         events=EventForm(request.POST,request.FILES)
         if events.is_valid():
             events.save()
-            print("user",request.user.username, "Create the Event", request.POST)
             return redirect('/eventlist/')
         else:
             print("Error")
@@ -50,11 +53,13 @@ def event(request):
 class EventUpdateView(UpdateView):
     
     fields = '__all__'
+    #fields = ['image']
     template_name = 'eventedit.html'
     #form = 'EventForm'
     model = EventKindofProblem
     
     success_url ="/eventlist/"
+    #success_url = reverse_lazy('/eventlist/')
 
 
 
@@ -97,12 +102,12 @@ def eventupdate(request, id):
 
 def eventlist(request):
     allevent=EventKindofProblem.objects.all().order_by('-id')[:5]
-    events = EventKindofProblem.objects.all()
-    
+    events = EventKindofProblem.objects.all().order_by('-id')
+    #export_to_CSV = forms.BooleanField(Required=False)
     myFilter=eventfilter(request.GET,queryset=events)
     events=myFilter.qs
     form=EventForm()
-    context ={'events':events ,'myFilter':myFilter}
+    context ={'events':events ,'myFilter':myFilter }
     return render(request,'eventlist.html',context)
 
 
@@ -138,9 +143,10 @@ def eventpdf(request):
     return FileResponse (buf,as_attachment=True,filename='report.PDF')
 
 def get_csv(request):
-    qs=EventKindofProblem.objects.all()
-    myFilter=eventfilter(request.GET,queryset=qs)
-    return djqscsv.render_to_csv_response(myFilter.qs,append_datestamp=True,field_header_map={'id':'شماره'} )
+    events=EventKindofProblem.objects.all()
+    myFilter=eventfilter(request.GET,queryset=events)
+    result=myFilter.qs
+    return djqscsv.render_to_csv_response(result,append_datestamp=True,field_header_map={'id':'شماره'} )
     
     
 
@@ -168,7 +174,7 @@ def eventdestroy(request, id):
         event.delete()
         # after deleting redirect to
         # home page
-        print("user",request.user.username, "Deleted the Event","id",id,request.POST)
+        print("user",request.user.username, "Deleted the Event","id",id)
         #print(request.datetime.datetime.now())
         #id=request.POST['id']
         #print("id",id)
@@ -221,7 +227,9 @@ def search(request):
 
 def durations(request):
     durations = EventKindofProblem.objects.annotate(duration = F('minute_of_end') - F('minute_of_start'))
-    return render(request, 'eventlist.html', {'durations':durations})
+    for duration in durations:
+        print(duration)
+    return HttpResponse(f'')
 
 def history_of_event(request, pk):
     if request.method == "GET":

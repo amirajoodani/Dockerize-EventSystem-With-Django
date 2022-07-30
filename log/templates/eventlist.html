@@ -37,7 +37,6 @@
                         <button type="submit" class="button">Search</button>
                     </div>
                     <div>
-                      <a class="button" href="{% url 'eventpdf' %}"> PDF </a>
                       <a class="button" href="{% url 'get_csv' %}"> csv </a>
                     </div>
               
@@ -74,6 +73,7 @@
                                 <th scope="col">سایر</th>
                                 <th scope="col">SMS</th>
                                 <th scope="col">شرح وقایع</th>
+                                
                                 <th scope="col">اقدام</th>
                                 
                               </tr>  
@@ -92,8 +92,9 @@
                                 <td>{{ event.year_of_end }}</td>  
                                 <td>{{ event.hour_of_end }}</td>  
                                 <td>{{ event.minute_of_end }}</td>
+                                
                                 <td>{{event.deltatime}}</td>
-                               
+                                
                                 <td>{{ event.mainproblem }}</td> 
                                 <td>{{ event.detailproblem }}</td> 
                                 <td>{{ event.Bank }}</td> 
@@ -115,6 +116,7 @@
                                 <td>{{ event.Assigng_to_others }}</td> 
                                 <td>{{ event.SMS }}</td> 
                                 <td>{{ event.description }}</td>
+                                
                                 
 
                                

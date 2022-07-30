@@ -66,7 +66,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -76,11 +76,12 @@ INSTALLED_APPS = [
     'django_jalali',
     'jalali_date',
     'django_filters',
-    'simple_history',
-    'mathfilters',
     'jet',
     'jet.dashboard',
-    'django.contrib.admin',
+    'simple_history',
+    'mathfilters',
+    
+   
     'crispy_forms',
     
     
