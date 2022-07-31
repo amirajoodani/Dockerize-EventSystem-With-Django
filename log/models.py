@@ -189,29 +189,10 @@ class EventKindofProblem(models.Model):
         db_table = "event" 
     @property
     def deltatime(self):
-        
-        #self.year_of_end=None
-        #self.year_of_start=None
-        #self.mounth_of_end=None
-        #self.mounth_of_start=None
-        #day_of_end=None
-        #day_of_start=None
-        #self.hour_of_end=None
-        #self.hour_of_start=None
-        #self.minute_of_end=None
-        #self.minute_of_start=None
-        #self.delta=int(self.minute_of_end)-int(self.minute_of_start)
-        #deltayear= int(self.year_of_end or 0) - int(self.year_of_start or 0)
-        #deltaday=int(self.day_of_end or 0) - int(self.day_of_start or 0)
-        #deltatime = int(minute_of_end or 0 )-int(self.minute_of_start or 0)
-        #duration = EventKindofProblem.objects.annotate(delta=(F(int('minute_of_end'))) - (F(int('minute_of_start'))))
-        #deltatime = EventKindofProblem.objects.minute_of_end - EventKindofProblem.objects.minute_of_start
+        #deltaday=0
+        #deltaday= self.day_of_end - self.day_of_start
         return 42
-    #def duration(self):
-    #    duration = EventKindofProblem.objects.annotate(duration = F('minute_of_end') - F('minute_of_start'))
-    #    return  duration
-    # EventKindofProblem.objects.annotate(duration=F('minute_of_end') - F('minute_of_start'))
-
+   
 
 class E1MPLS(models.Model):
     name =  models.CharField(max_length=255)

@@ -2,6 +2,7 @@ from asyncio import events
 from cmath import log
 from multiprocessing import Event
 from typing_extensions import Required
+from urllib import response
 from django.shortcuts import render,redirect ,HttpResponseRedirect 
 from .models import EventKindofProblem
 from django.http import HttpResponse
@@ -11,7 +12,7 @@ from django.dispatch import receiver
 from log.forms import EventForm , responsetimeform
 from log.models import EventKindofProblem , ResponseTime
 from django.contrib import messages
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView ,CreateView
 from django.http import FileResponse
 import io
 from django.views.generic import FormView
@@ -27,6 +28,8 @@ import djqscsv
 from excel_response import ExcelResponse
 import csv 
 from django.urls import reverse_lazy
+#from .forms import CreateEventForm
+from .models import EventMainProblem
 
 
 
@@ -144,9 +147,19 @@ def eventpdf(request):
 
 def get_csv(request):
     events=EventKindofProblem.objects.all()
-    myFilter=eventfilter(request.GET,queryset=events)
-    result=myFilter.qs
-    return djqscsv.render_to_csv_response(result,append_datestamp=True,field_header_map={'id':'شماره'} )
+    myFilter=eventfilter(request.GET,queryset=events).qs
+    #result=myFilter.qs
+    #return djqscsv.render_to_csv_response(result,append_datestamp=True,field_header_map={'id':'شماره'} )
+    response=HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="result.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['day_of_start'])
+    #writer.writerow('__all__')
+    for event in myFilter.values_list ('day_of_start'):
+        writer.writerow(event)
+    return response 
+
+
     
     
 
@@ -235,3 +248,16 @@ def history_of_event(request, pk):
     if request.method == "GET":
        obj = EventKindofProblem.objects.get(pk=pk)
        return render(request, 'eventlist.html', context={'object': obj})
+
+
+
+#class PersonCreateView(CreateView):
+#    model =EventKindofProblem 
+#    form_class = CreateEventForm
+#    success_url = reverse_lazy('person_changelist')
+
+
+def load_problem(request):
+    EventDetailProblem_id = request.GET.get('EventDetailProblem_id')
+    EventMainProblems = EventMainProblem.objects.filter(EventDetailProblem_id=EventDetailProblem_id).order_by('name')
+    return render(request, 'event.html', {'EventMainProblems': EventMainProblems})
