@@ -29,7 +29,7 @@ from excel_response import ExcelResponse
 import csv 
 from django.urls import reverse_lazy
 #from .forms import CreateEventForm
-from .models import EventMainProblem
+from .models import EventMainProblem ,EventDetailProblem
 
 
 
@@ -153,9 +153,9 @@ def get_csv(request):
     response=HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="result.csv"'
     writer = csv.writer(response)
-    writer.writerow(['day_of_start'])
+    writer.writerow(['day_of_start','mounth_of_start','year_of_start','hour_of_start','minute_of_start','day_of_end','mounth_of_end','year_of_end','hour_of_end','minute_of_end',str('mainproblem'),'detailproblem','Bank','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others','SMS','description'])
     #writer.writerow('__all__')
-    for event in myFilter.values_list ('day_of_start'):
+    for event in myFilter.values_list ('day_of_start','mounth_of_start','year_of_start','hour_of_start','minute_of_start','day_of_end','mounth_of_end','year_of_end','hour_of_end','minute_of_end',str('mainproblem'),'detailproblem','Bank','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others','SMS','description'):
         writer.writerow(event)
     return response 
 
@@ -258,6 +258,6 @@ def history_of_event(request, pk):
 
 
 def load_problem(request):
-    EventDetailProblem_id = request.GET.get('EventDetailProblem_id')
-    EventMainProblems = EventMainProblem.objects.filter(EventDetailProblem_id=EventDetailProblem_id).order_by('name')
-    return render(request, 'event.html', {'EventMainProblems': EventMainProblems})
+    EventMainProblems_id = request.GET.get('EventMainProblem')
+    EventDetailProblems = EventDetailProblem.objects.filter(EventMainProblems_id=EventMainProblems_id).order_by('name')
+    return render(request, 'event.html', {' EventDetailProblems':  EventDetailProblems})

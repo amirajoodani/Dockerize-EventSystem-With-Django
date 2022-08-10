@@ -17,4 +17,4 @@ class eventfilter(django_filters.FilterSet):
 
     class Meta:
         model = EventKindofProblem
-        fields=['day_of_start','mounth_of_start','day_of_end','mounth_of_end','city','Connection','mainproblem','detailproblem']
+        fields=['day_of_start','mounth_of_start','hour_of_start','day_of_end','mounth_of_end','hour_of_end','city','Connection','mainproblem','detailproblem']

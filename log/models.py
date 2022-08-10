@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords
 import pint
 from django.db.models import F
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -118,16 +120,27 @@ class EventKindofProblem(models.Model):
     #start_date = jmodels.jDateTimeField(null=True,blank=True)
     #start_date2 = jDateTimeField()
     #end_date = jmodels.jDateTimeField(null=True,blank=True)
-    day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
-    day_of_end = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
-    mounth_of_end= models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
-    year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
-    hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
-    minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    day_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True)
+    #mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    mounth_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True)
+    #year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    year_of_start = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True)
+    #hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    hour_of_start = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    #minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    minute_of_start =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True)
+    #day_of_end = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    day_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True,blank=True)
+    #mounth_of_end = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    mounth_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True,blank=True)
+    #year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    year_of_end = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True,blank=True)
+    #hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    hour_of_end = models.IntegerField(blank=True,validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    #minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    minute_of_end =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True,blank=True)
+    
     
     objects = jmodels.jManager()
 
@@ -189,9 +202,38 @@ class EventKindofProblem(models.Model):
         db_table = "event" 
     @property
     def deltatime(self):
-        #deltaday=0
-        #deltaday= self.day_of_end - self.day_of_start
-        return 42
+        deltaday=0
+        deltamounth=0
+        deltayear=0
+        deltahour=0
+        deltamin=0
+        deltamintotal=0
+        if self.mounth_of_end and self.mounth_of_start !=None:
+            deltamounth = (self.mounth_of_end - self.mounth_of_start)*43800
+        else:
+            deltamounth=0
+
+        if self.year_of_end and self.year_of_start !=None:
+            deltayear = (self.year_of_end - self.year_of_start)*525600
+        else:
+            deltayear=0
+
+        if self.hour_of_end and self.hour_of_start !=None:
+            deltahour = (self.hour_of_end - self.hour_of_start)*60
+        else:
+            deltahour=0
+
+        if self.minute_of_end and self.minute_of_start !=None:
+            deltamin = (self.minute_of_end - self.minute_of_start)
+        else:  deltamin=0
+
+        if self.day_of_end and self.day_of_start !=None:
+            deltaday= (self.day_of_end - self.day_of_start)*1440
+        else:
+            deltaday=0
+
+        deltamintotal=deltayear+deltamounth+deltaday+deltahour+deltamin
+        return deltamintotal
    
 
 class E1MPLS(models.Model):

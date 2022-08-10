@@ -7,7 +7,7 @@
     height:120px;
     border: 0px solid;
     margin-left: 0px ;
-    margin-left: 0px ;
+    margin-top: -10px ;
     font-family: 'Arial';
 }
 
@@ -61,7 +61,7 @@ aside {
     color: #fff;
     width: 190px;
     padding-left: 0px;
-    padding-top: 0px;
+    padding-top: -10px;
     margin: 0px 0px 0px 0px;
     height: 40vh;
     background-image: linear-gradient(30deg , #0048bd, #44a7fd);
