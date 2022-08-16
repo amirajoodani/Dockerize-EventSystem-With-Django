@@ -1,10 +1,10 @@
+from django.http import JsonResponse
 from asyncio import events
 from cmath import log
 from multiprocessing import Event
 from typing_extensions import Required
 from urllib import response
 from django.shortcuts import render,redirect ,HttpResponseRedirect 
-from .models import EventKindofProblem
 from django.http import HttpResponse
 from django.urls import path
 from django.db.models.signals import pre_save
@@ -37,10 +37,10 @@ def event(request):
     context ={}
     events=EventForm()
     #print("OK")
-    if request.method=='POST':
+    if request.method == 'POST':
         #image=request.FILES['image']
         #print('printing POST:' , request.POST)
-        events=EventForm(request.POST,request.FILES)
+        events=EventForm(request.POST, request.FILES)
         if events.is_valid():
             events.save()
             return redirect('/eventlist/')
@@ -48,7 +48,7 @@ def event(request):
             print("Error")
             print(events.errors)
             #messages.error(request, "Error")
-    context={'form':events}
+    context={'form': events}
     return render(request,'event.html',context)
         
 
@@ -147,16 +147,33 @@ def eventpdf(request):
 
 def get_csv(request):
     events=EventKindofProblem.objects.all()
-    myFilter=eventfilter(request.GET,queryset=events).qs
+    myFilter=eventfilter(request.GET, queryset=events).qs
     #result=myFilter.qs
     #return djqscsv.render_to_csv_response(result,append_datestamp=True,field_header_map={'id':'شماره'} )
     response=HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="result.csv"'
     writer = csv.writer(response)
-    writer.writerow(['day_of_start','mounth_of_start','year_of_start','hour_of_start','minute_of_start','day_of_end','mounth_of_end','year_of_end','hour_of_end','minute_of_end',str('mainproblem'),'detailproblem','Bank','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others','SMS','description'])
+    writer.writerow(['day_of_start','mounth_of_start','year_of_start','hour_of_start','minute_of_start','day_of_end','mounth_of_end','year_of_end','hour_of_end','minute_of_end','deltatime','mainproblem','detailproblem','Bank','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others',  'image', 'SMS', 'description'])
     #writer.writerow('__all__')
-    for event in myFilter.values_list ('day_of_start','mounth_of_start','year_of_start','hour_of_start','minute_of_start','day_of_end','mounth_of_end','year_of_end','hour_of_end','minute_of_end',str('mainproblem'),'detailproblem','Bank','city','Connection','IncidentID','DownTime','ReportToDepartment','Assign_to_name1','Assign_to_name2','Assign_to_name3','Assign_to_name4','Assigng_to_others','SMS','description'):
-        writer.writerow(event)
+    events = myFilter.values_list('id','day_of_start', 'mounth_of_start', 'year_of_start', 'hour_of_start', 'minute_of_start',
+                         'day_of_end', 'mounth_of_end', 'year_of_end', 'hour_of_end', 'minute_of_end',
+                         'mainproblem__name', 'detailproblem__name', 'Bank__name', 'city__name',
+                         'Connection__Connection', 'IncidentID', 'DownTime', 'ReportToDepartment__Department',
+                         'Assign_to_name1__name', 'Assign_to_name2__name', 'Assign_to_name3__name',
+                         'Assign_to_name4__name', 'Assigng_to_others__organization', 'SMS', 'description')
+    events_list = [event for event in events]
+    for event in events_list:
+        clened_event = ['--' if not x else x for x in event]
+        event_obj = EventKindofProblem.objects.get(id=int(event[0]))
+        clened_event.insert(11, event_obj.deltatime)
+        if event_obj.image:
+            image_url = request.build_absolute_uri(event_obj.image.url)
+            clened_event.insert(-2, image_url)
+        else:
+            clened_event.insert(-2, '--')
+
+        del clened_event[0]
+        writer.writerow(clened_event)
     return response 
 
 
@@ -257,7 +274,9 @@ def history_of_event(request, pk):
 #    success_url = reverse_lazy('person_changelist')
 
 
-def load_problem(request):
-    EventMainProblems_id = request.GET.get('EventMainProblem')
-    EventDetailProblems = EventDetailProblem.objects.filter(EventMainProblems_id=EventMainProblems_id).order_by('name')
-    return render(request, 'event.html', {' EventDetailProblems':  EventDetailProblems})
+def load_problems(request):
+    event_main_problems_id = request.GET.get('EventMainProblem')
+    event_detail_problems = EventDetailProblem.objects.filter(eventmainproblem__id=event_main_problems_id).order_by('name').values('id', 'name')
+    # data = [{'id': problem.pk, 'name': problem.name} for problem in event_detail_problems]
+    # print(data)
+    return render(request, 'datiled_event_options.html', {'detailedproblems':  event_detail_problems})

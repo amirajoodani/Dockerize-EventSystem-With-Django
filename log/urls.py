@@ -29,6 +29,7 @@ urlpatterns = [
  path(r'^search/$', views.search , name="search"),
  path('eventlist/eventpdf', views.eventpdf , name='eventpdf'), 
  path('eventlist/get_csv', views.get_csv , name='get_csv'),
+ path('eventlist/load_problems', views.load_problems, name='load_problems'),
 
 
 ]
