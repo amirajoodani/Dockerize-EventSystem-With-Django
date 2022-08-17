@@ -35,86 +35,122 @@ def validate_file_extension (value):
     
 class EventMainProblem(models.Model):
     name =  models.CharField(max_length=255,unique=True)
+
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.name
     
 class EventDetailProblem(models.Model):
     eventmainproblem = models.ForeignKey(EventMainProblem,on_delete=models.SET_NULL,null=True)
+    class Meta:
+        app_label = 'log'
     name =  models.CharField(max_length=255,unique=True)
     def __str__(self):
         return self.name
     
 class assign_to(models.Model):
     name=models.CharField(max_length=25,unique=True,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.name
     
 class expert(models.Model):
     name=models.CharField(max_length=25,unique=True,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.name
 
 class Bank(models.Model):
     name = models.CharField(max_length=20,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.name
 
 class city(models.Model):
     name  = models.CharField(max_length=20,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.name
 
 class Connection(models.Model):
     Connection  = models.CharField(max_length=10,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.Connection
     
 class Report_To(models.Model):
     Department  = models.CharField(max_length=10,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.Department
 
 class Other_Organization(models.Model):
     organization=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.organization
 
 class Push_Organization(models.Model):
     organization=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.organization
 
 class IrancellNumber(models.Model):
     number=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.number
 
 class year(models.Model):
     year=models.CharField(max_length=300,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.year
 
 class mounth(models.Model):
     mounth=models.CharField(max_length=300,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.mounth
 
 class day(models.Model):
     day=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.day
 
 class hour(models.Model):
     hour=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.hour
 
 class minute(models.Model):
     minute=models.CharField(max_length=30,null=True,blank=True)
+    class Meta:
+        app_label = 'log'
     def __str__(self):
         return self.minute
     
 class EventKindofProblem(models.Model):
+    class Meta:
+        app_label = 'log'
+
     #name =  models.CharField(max_length=255,null=True,blank=True)
     #owner = models.ForeignKey('auth.User',on_delete=models.RESTRICT)
     #start_date = jmodels.jDateTimeField(null=True,blank=True)
@@ -147,7 +183,11 @@ class EventKindofProblem(models.Model):
     status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'),('None','None'))
     #status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
     mainproblem = models.ForeignKey(EventMainProblem,on_delete=models.SET_NULL,null=True)
-    detailproblem = models.ForeignKey(EventDetailProblem,on_delete=models.SET_NULL,null=True)
+    detailproblem = models.ForeignKey(
+        EventDetailProblem,
+        on_delete=models.SET_NULL,
+        null=True
+    )
     Bank= models.ForeignKey(Bank,on_delete=models.SET_NULL,null=True,blank=True)
     image = models.FileField(upload_to='media',null=True , blank=True,validators=[validate_file_extension])
     city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
@@ -237,6 +277,8 @@ class EventKindofProblem(models.Model):
    
 
 class E1MPLS(models.Model):
+    class Meta:
+        app_label = 'log'
     name =  models.CharField(max_length=255)
     start_date = jmodels.jDateTimeField()
     end_date = jmodels.jDateTimeField(null=True,blank=True) 
@@ -253,6 +295,8 @@ class E1MPLS(models.Model):
         db_table = "E1MPLS"  
 
 class Push(models.Model):
+    class Meta:
+        app_label = 'log'
     name =  models.CharField(max_length=255)
     start_date = jmodels.jDateTimeField()
     end_date = jmodels.jDateTimeField(null=True,blank=True)
@@ -266,6 +310,10 @@ class Push(models.Model):
         db_table = "Push"  
 
 class Access(models.Model):
+    class Meta:
+        app_label = 'log'
+        db_table = "Access"
+
     boss=models.ForeignKey(assign_to,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
     start_date = jmodels.jDateTimeField()
     end_date = jmodels.jDateTimeField(null=True,blank=True)
@@ -275,8 +323,6 @@ class Access(models.Model):
     
     def __str__(self):
         return self.boss
-    class Meta:  
-        db_table = "Access"  
 
 class NoAnswerCall(models.Model):
     call_date = jmodels.jDateTimeField()
@@ -287,7 +333,9 @@ class NoAnswerCall(models.Model):
     def __str__(self):
         return self.name
     class Meta:  
-        db_table = "NoAnswerCall"  
+        db_table = "NoAnswerCall"
+        app_label = 'log'
+
 
 class ResponseTime(models.Model):
     name =  models.CharField(max_length=255)
@@ -301,6 +349,7 @@ class ResponseTime(models.Model):
         return self.name
     class Meta:  
         db_table = "ResponseTime"  
+        app_label = 'log'
 
 class APNIrancell(models.Model):
     date = jmodels.jDateTimeField()
@@ -315,9 +364,12 @@ class APNIrancell(models.Model):
         return self.date
     class Meta:  
         db_table = "APNIrancell"  
+        app_label = 'log'
 
 
 class EventKindofProblemHistory(models.Model):
+    class Meta:
+        app_label = 'log'
     #name =  models.CharField(max_length=255,null=True,blank=True)
     #owner = models.ForeignKey('auth.User',on_delete=models.RESTRICT)
     #start_date = jmodels.jDateTimeField(null=True,blank=True)

@@ -1,2 +1,5 @@
 #virtualenv
 venv
+db.sqlite3
+req.txt
+.idea
