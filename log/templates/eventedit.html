@@ -43,6 +43,33 @@
               <input type="submit" value="Update">
             </form>
           </div>
+          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script >
+                $(function(){
+                    var selected_option_text = $('#id_mainproblem').find(":selected").text();
+                    if(!selected_option_text.includes('---')){
+                        var selected_option_value = $('#id_mainproblem').find(":selected").val();
+                          var url = "{% url 'load_problems' %}"
+                        $.ajax({
+                          url: url+"?EventMainProblem=+"+selected_option_value,
+                          success: function (data){
+                            $("#id_detailproblem").html(data);
+                          }
+
+                        });
+                    }
+                });
+              $("#id_mainproblem").change(function() {
+                    var selected_option_value = $(this).find(":selected").val();
+                    var url = "{% url 'load_problems' %}"
+                    $.ajax({
+                      url: url+"?EventMainProblem=+"+selected_option_value,
+                      success: function (data){
+                        $("#id_detailproblem").html(data);
+                      }
+                    });
+              });
+            </script>
       </div>
 
     </div>    
