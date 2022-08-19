@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% load static %} 
 <html lang="en">  
-<head>  
+  <head>  
     <meta charset="UTF-8">  
     <title>Event Update</title>  
      
@@ -11,72 +11,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
   
-</head>  
-<body>
-    
-    <div class="wrapper2"> 
-
-      <div class="divedit" >
-        <div class="navbar"> 
-          <aside class="asideedit">
-            <p> Sadad Log  </p>
-              <i class="fa fa-user-o" aria-hidden="true"></i>
-              <a href="{% url 'eventlist' %}">EventList</a>
-            </a>
-           
-              <i class="fa fa-laptop" aria-hidden="true"></i>
-              <a href="{% url 'event' %}" >Event</a>
-            </a>
-           
-              <i class="fa fa-clone" aria-hidden="true"></i>
-              <a href="{% url 'logout' %}">Log Out</a>
-            </a>
-          </aside>
-        </div>
+  </head>  
+  <body>
+ 
+    <div class="navbar" id="myHeader">
+      <div>
+       <a href="{% url 'eventlist' %}">لیست رویدادها</a>
+       <a href="{% url 'event' %}">ثبت رویداد </a>
       </div>
+      <div>
+        <a href="{% url 'logout' %}" class="right">خروج</a>
+      </div>
+    </div>  
+      
+  
+    <div class="row">
 
-      <div class="divedit">
-          <div class="form">
-            <form method="POST" enctype="multipart/form-data"> 
-              {% csrf_token %}
-              {{ form | crispy  }}
-              <input type="submit" value="Update">
-            </form>
-          </div>
-          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-            <script >
-                $(function(){
-                    var selected_option_text = $('#id_mainproblem').find(":selected").text();
-                    if(!selected_option_text.includes('---')){
-                        var selected_option_value = $('#id_mainproblem').find(":selected").val();
-                          var url = "{% url 'load_problems' %}"
-                        $.ajax({
-                          url: url+"?EventMainProblem=+"+selected_option_value,
-                          success: function (data){
-                            $("#id_detailproblem").html(data);
-                          }
+      <div class="eventeditform">
+         <form method="POST" enctype="multipart/form-data"> 
+           {% csrf_token %}
+           {{ form | crispy  }}
+          <input type="submit" value="Update">
+         </form>
+      </div>
+    
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+       <script >
+           $(function(){
+               var selected_option_text = $('#id_mainproblem').find(":selected").text();
+               if(!selected_option_text.includes('---')){
+                   var selected_option_value = $('#id_mainproblem').find(":selected").val();
+                     var url = "{% url 'load_problems' %}"
+                   $.ajax({
+                     url: url+"?EventMainProblem=+"+selected_option_value,
+                     success: function (data){
+                       $("#id_detailproblem").html(data);
+                     }
 
-                        });
-                    }
-                });
-              $("#id_mainproblem").change(function() {
-                    var selected_option_value = $(this).find(":selected").val();
-                    var url = "{% url 'load_problems' %}"
-                    $.ajax({
-                      url: url+"?EventMainProblem=+"+selected_option_value,
-                      success: function (data){
-                        $("#id_detailproblem").html(data);
-                      }
-                    });
+                   });
+               }
+           });
+          $("#id_mainproblem").change(function() {
+              var selected_option_value = $(this).find(":selected").val();
+              var url = "{% url 'load_problems' %}"
+              $.ajax({
+                url: url+"?EventMainProblem=+"+selected_option_value,
+                success: function (data){
+                  $("#id_detailproblem").html(data);
+                }
               });
-            </script>
-      </div>
+          });
+        </script>
+      
+    </div>
+  
 
-    </div>    
-       
-    
-</body>
 
+
+     <div class="footer">
+       <h2>تمامی حقوق متعلق به شرکت پرداخت الکترونیک سداد می باشد </h2> 
+     </div>
+ 
+  </body>
  
 </html>  
 {% endblock %}  

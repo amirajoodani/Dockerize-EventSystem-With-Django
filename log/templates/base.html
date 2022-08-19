@@ -1,38 +1,33 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8">
   
-  <title>{% block title %}LOG MGMT{% endblock %}</title>
-  {% load static %}
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-<body>
-{% block content %}{% endblock %}
-{% if user.is_authenticated %}
+    <title>{% block title %}LOG MGMT{% endblock %}</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  </head>
+ <body>
+   {% block content %}{% endblock %}
+   {% if user.is_authenticated %}
 
 
-<aside>
-  <p> Sadad Log  </p>
-    <i class="fa fa-user-o" aria-hidden="true"></i>
-    <a href="{% url 'eventlist' %}">EventList</a>
-  </a>
- 
-    <i class="fa fa-laptop" aria-hidden="true"></i>
-    <a href="{% url 'event' %}" >Event</a>
-  </a>
- 
-    <i class="fa fa-clone" aria-hidden="true"></i>
-    <a href="{% url 'logout' %}">Log Out</a>
-  </a>
-  
-</aside>
+    <div class="navbar">
 
-{% endif %}
+     <div>
+      <a href="{% url 'eventlist' %}">لیست رویدادها</a>
+      <a href="{% url 'event' %}">ثبت رویداد </a>
+      </div>
+       <a href="{% url 'logout' %}" class="right">خروج</a>
+      </div> 
 
-</body>
+
+
+   {% endif %}
+
+  </body>
 </html>
