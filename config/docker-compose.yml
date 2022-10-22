@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - blogpy_static_volume:/logapp/static
+      - blogpy_files_volume:/blogpy/media
+    networks:
+      - nginx_network
+
+volumes:
+  logapp_static_volume:
+    external: true
+  logapp_files_volume:
+    external: true
+networks:
+  nginx_network:
+    external: true

@@ -1,0 +1,125 @@
+version: '3'
+
+services:
+  logapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/logapp
+      - logapp_static_volume:/logapp/static
+      - logapp_files_volume:/logapp/media
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - logapp_network
+      - nginx_network
+    depends_on:
+      - logapp_postgresql
+  logapp_postgresql:
+    image: postgres:10
+    container_name: logapp_postgresql
+    volumes:
+      - logapp_postgresql:/var/lib/postgresql/data
+    restart: always
+    env_file: .env
+    ports:
+      - "5432:5432"
+    networks:
+      - logapp_network
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4:5.5
+    restart: always
+    environment:
+     PGADMIN_DEFAULT_EMAIL: noc@sadadpsp.ir
+     PGADMIN_DEFAULT_PASSWORD: NOCnocNOC@123
+     PGADMIN_LISTEN_PORT: 5433
+    ports:
+     - "5433:5433"
+    volumes:
+     - pgadmin:/var/lib/pgadmin
+    networks:
+     - logapp_network
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+     - "--api=true"
+     - "--api.insecure=true"
+     - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+     - "--providers.docker.exposedbydefault=false"
+     - "--providers.docker.network=logapp_network"
+     - "--entrypoints.http.address=:5434"
+    labels:
+     - "traefik.enable=true"
+     - "traefik.docker.network=logapp_network"
+     - "traefik.http.routers.tra.entrypoints=http"
+     - "traefik.http.services.tra.loadbalancer.server.port=5434"
+    ports:
+     - "5434:5434"
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+     - logapp_network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+     - grafana:/var/lib/grafana
+    labels:
+     - "traefik.enable=true"
+     - "traefik.docker.network=http_network"
+     - "traefik.http.routers.gra.entrypoints=http"
+     - "traefik.http.services.gra.loadbalancer.server.port=5435"
+    networks:
+     - logapp_network
+    
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes: 
+     - loki:/tmp/loki
+     - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+    labels:
+     - "traefik.enable=true"
+     - "traefik.docker.network=http_network"
+     - "traefik.http.routers.lok.entrypoints=http"
+     - "traefik.http.services.lok.loadbalancer.server.port=5436"
+    networks:
+     - logapp_network
+
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+     - /var/log:/var/log
+     - ./promtail/docker-config.yaml:/etc/promtail/docker-config.yaml
+    command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+    - logapp_network
+  
+volumes:
+  logapp_postgresql:
+    external: true
+  logapp_static_volume:
+    external: true
+  logapp_files_volume:
+    external: true
+  pgadmin:
+    name: pgadmin
+  grafana:
+    name: grafana
+  loki:
+    name: loki
+networks:
+  logapp_network:
+    external: true
+  nginx_network:
+    external: true
