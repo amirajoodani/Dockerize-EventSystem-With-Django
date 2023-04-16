@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "iran sans";
+  src: url("/log/static/fonts/IRAN\ SANS\ EXPANDED.TTF SANS\ EXPANDED.TTF");
+}
+
+
+
+
 #wrapper {
     border: 0px solid;
 }
@@ -8,7 +16,7 @@
     border: 0px solid;
     margin-left: 0px ;
     margin-top: -10px ;
-    font-family: 'Arial';
+    font-family: "iran sans",sans-serif;
 }
 
 #div2 {
@@ -17,14 +25,15 @@
     height:160px;
     border: 0px solid;
     margin-left: -90px ;
-    font-family: 'Arial';
-    font: 20px / 1.4em Arial;
+    font-family: "iran sans",sans-serif;
+    
 }
 .wrapper2 {
     padding:0px; 
 
 }
-.form {font:14px/1.5em Arial;
+.form {
+    font-family: "iran sans",sans-serif;
     background:#fff;
     height:100%;
     border: 0px solid #fff;
@@ -35,8 +44,9 @@
    
     margin-left: 0px;
 }
-.search {font:14px/1.5em Arial;
-    
+.search {
+
+    font-family: "iran sans",sans-serif;
     background-color: #fff;
     padding: 10px 20px 20px 20px;
     background:#fff;
@@ -52,10 +62,12 @@
    
    
 }
-.searchbutton {font:14px/1.5em Arial;
+.searchbutton {
+  font-family: "iran sans",sans-serif;
   padding: 30px 20px 20px 0px;
 }
-.downloadcsvbutton {font:14px/1.5em Arial;
+.downloadcsvbutton {
+  font-family: "iran sans",sans-serif;
   padding: 30px 10px 10px 0px;
 }
 
@@ -164,14 +176,15 @@ aside {
   }
   
   body {
-    font-family: 'Georgia,Verdana';
+    font-family: "iran sans",sans-serif;
     width: 100%;
     height: 100%;
     margin: 0px;
   }
   
 
-body {font: 15px / 2em Arial;
+body {
+   font-family: "iran sans",sans-serif;
     background:#fff;
     height:100%;
     margin:0px 0px;
@@ -183,7 +196,7 @@ body {font: 15px / 2em Arial;
     margin: 0px 0px;
 
     }
-h1 {font:24px Georgia,Verdana; margin:0}
+h1 {font-family: "iran sans",sans-serif; margin:0}
 h2 {font-size:12px; font-weight:normal; font-style:none; margin:0 0 20px}
 h3 {font-size:24px; font-weight:normal; font-style:none; margin:0px 0px 0px}
 p {margin-top:0}
@@ -196,7 +209,8 @@ testdiv {width:600px; margin:200 auto; border:5px solid #fff; padding:20px 25px;
 #tinymask {position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000; z-index:1500}
 #tinycontent {background:#fff}
 
-.button { appearance: none;
+.button { 
+    appearance: none;
     background-color: #235dba;
     border: 1px solid rgba(27, 31, 35, .15);
     border-radius: 6px;
@@ -228,7 +242,7 @@ a.button { appearance: none;
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: "iran sans",sans-serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
@@ -252,7 +266,7 @@ a.button { appearance: none;
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: "iran sans",sans-serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
@@ -272,7 +286,7 @@ a.button { appearance: none;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(176, 206, 214);
     color: #FFFFFF;
-    Font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: "iran sans",sans-serif;
     font-size: 15px;
     font-weight: bold;
     height: 15px;
@@ -286,37 +300,43 @@ a.button { appearance: none;
 
 td,
 th {
+   font-family: "iran sans",sans-serif;
     border: 1px solid rgb(190, 190, 190);
     padding: 10px;
 }
 
 td {
     text-align: center;
+    font-family: "iran sans",sans-serif;
 }
 
 tr:nth-child(even) {
     background-color: #eee;
+    font-family: "iran sans",sans-serif;
 }
 
 th[scope="col"] {
     background-color: #0688fa;
     color: #fff;
+    font-family: "iran sans",sans-serif;
 }
 
 th[scope="row"] {
     background-color: #d7d9f2;
+    font-family: "iran sans",sans-serif;
 }
 
 caption {
     padding: 10px;
     caption-side: bottom;
+    font-family: "iran sans",sans-serif;
 }
 
 table {
     border-collapse: collapse;
     border: 2px solid rgb(200, 200, 200);
     letter-spacing: 1px;
-    font-family: sans-serif;
+    font-family: "iran sans",sans-serif;
     font-size: .8rem;
 }
 .del-button { appearance: none;
@@ -328,7 +348,7 @@ table {
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: "iran sans",sans-serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
@@ -343,7 +363,7 @@ table {
     white-space: nowrap;}
 .del-button:hover {border:1px solid #bbb; background:#ee7474}
 
-form {font:14px/1.5em Arial;
+form {font-family: "iran sans",sans-serif;;
     background:#fff;
     height:100%;
     border: 0px solid #fff;
@@ -353,7 +373,7 @@ form {font:14px/1.5em Arial;
     padding: 0px 0px 0px 0px;
     margin: 0px 0px;
 }
-.eventedit {font:20px/1.5em Arial;
+.eventedit {font-family: "iran sans",sans-serif;;
     background:#fff;
     height:100%;
     border: 0px solid #fff;
@@ -371,7 +391,7 @@ form {font:14px/1.5em Arial;
   
   /* Style the body */
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "iran sans",sans-serif;
     margin: 0;
   }
   
@@ -387,6 +407,7 @@ form {font:14px/1.5em Arial;
     height:55%;
     margin: 0;
     padding: 0;
+    font-family: "iran sans",sans-serif;
 
    
     
@@ -402,16 +423,19 @@ form {font:14px/1.5em Arial;
     text-decoration: none;
     border-radius: 6px;
     font-size: 1.2em;
+    font-family: "iran sans",sans-serif;
     
   }
   .footer h2{
     font-size: 1.2em;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Right-aligned link */
   .navbar a.left {
     float: left;
     border-radius: 10px;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Change color on hover */
@@ -419,6 +443,7 @@ form {font:14px/1.5em Arial;
     background-color: #ddd;
     color: black;
     text-decoration: none;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Active/current link */
@@ -429,6 +454,7 @@ form {font:14px/1.5em Arial;
     float: right;
     border-radius: 8px;
     text-decoration: none;
+    font-family: "iran sans",sans-serif;
     
   }
   
@@ -438,6 +464,7 @@ form {font:14px/1.5em Arial;
     display: inline-flex;
    
     flex-wrap: wrap;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Create two unequal columns that sits next to each other */
@@ -450,6 +477,7 @@ form {font:14px/1.5em Arial;
     flex: 70%;
     background-color: white;
     padding: 20px;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Fake image, just for this example */
@@ -457,6 +485,7 @@ form {font:14px/1.5em Arial;
     background-color: #aaa;
     width: 100%;
     padding: 20px;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Footer */
@@ -464,6 +493,7 @@ form {font:14px/1.5em Arial;
     padding: 20px;
     text-align: center;
     background: #ddd;
+    font-family: "iran sans",sans-serif;
   }
   
   /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
@@ -484,7 +514,7 @@ form {font:14px/1.5em Arial;
         width: 98%;
       }
   }
-  .eventeditform {font:1.5em Arial;
+  .eventeditform {font-family: "iran sans",sans-serif;;
     background:#fff;
     height:100%;
     border: 0px solid #fff;
@@ -497,4 +527,13 @@ form {font:14px/1.5em Arial;
     padding: 0px 0px 10px 30px;
     margin: 15px -10px 10px 0px;
   }
-  
+   
+ .grey {
+    background-color: rgba(128,128,128,.25);
+  }
+  .red {
+    background-color: rgba(255,0,0,.25);
+  }
+  .blue {
+    background-color: rgba(128,128,128,0.5);
+  }

@@ -18,6 +18,8 @@
       <div>
        <a href="{% url 'eventlist' %}">لیست رویدادها</a>
        <a href="{% url 'event' %}">ثبت رویداد </a>
+       
+       
       </div>
        <a href="{% url 'logout' %}" class="right">خروج</a>
     </div>
@@ -80,17 +82,21 @@
       <table class="table table-striped table-bordered table-sm">
           <thead class="thead-dark">
               <tr>
-                <th scope="col"> شناسه </th>  
-                  <th scope="col"> روز شروع</th>  
-                  <th scope="col"> ماه شروع</th>  
-                  <th scope="col"> سال شروع </th>
-                  <th scope="col">  ساعت شروع</th>
-                  <th scope="col">  دقیقه شروع</th>
-                  <th scope="col"> روز پایان</th>  
-                  <th scope="col">ماه پایان</th>  
-                  <th scope="col"> سال  پایان</th>
-                  <th scope="col"> ساعت پایان</th>
-                  <th scope="col">دقیقه پایان </th>
+                 <th scope="col"> شناسه </th>
+                 <th scope="col" class ="grey" > سال شروع </th>
+                 <th scope="col" class ="grey" > ماه شروع</th>
+                 <th scope="col" class ="grey" > روز شروع</th> 
+                 <th scope="col" class ="grey" >  ساعت شروع</th>
+                 <th scope="col" class ="grey" >  دقیقه شروع</th>
+
+
+                  <th scope="col" class ="blue" > سال  پایان</th>
+                  <th scope="col" class ="blue" >ماه پایان</th>  
+                  <th scope="col" class ="blue" > روز پایان</th>  
+                  <th scope="col" class ="blue" > ساعت پایان</th>
+                  <th scope="col" class ="blue" >دقیقه پایان </th>
+
+
                   <th scope="col">مدت زمان  </th>
                   <th scope="col">مشکل اصلی  </th>
                   <th scope="col">جزییات  </th>
@@ -100,33 +106,47 @@
                   <th scope="col">نوع ارتباط </th>
                   <th scope="col">IncidentID</th>
                   <th scope="col">DownTime</th>
-                  <th scope="col">گزارش داده شده به واحد </th>
+                 
+
+                  <th scope="col">کارشناس</th>
+                  <th scope="col">کارشناس</th>
+                  <th scope="col">کارشناس</th>
+                  <th scope="col">کارشناس</th>
+                  
                   
                   <th scope="col">سایر</th>
                   <th scope="col">SMS</th>
                   <th scope="col">شرح وقایع</th>
                   
                   <th scope="col">اقدام</th>
+                   
                   
                 </tr>  
           </thead>
           <tbody>  
               {% for event in events %}  
-                 <tr>  
-                  <td>{{ event.id }}</td>
-                  <td>{{ event.day_of_start }}</td>  
-                  <td>{{ event.mounth_of_start }}</td>  
-                  <td>{{ event.year_of_start }}</td>  
-                  <td>{{ event.hour_of_start }}</td>  
-                  <td>{{ event.minute_of_start }}</td>  
-                  <td>{{ event.day_of_end }}</td>  
-                  <td>{{ event.mounth_of_end }}</td>  
-                  <td>{{ event.year_of_end }}</td>  
-                  <td>{{ event.hour_of_end }}</td>  
-                  <td>{{ event.minute_of_end }}</td>
+                 <tr>
+                  <td>{{ event.id }}</td> 
+                  <td class="grey" >{{ event.year_of_start }}</td> 
+                  <td class="grey" >{{ event.mounth_of_start }}</td> 
+                  <td class="grey" >{{ event.day_of_start }}</td>
+                  <td class="grey" >{{ event.hour_of_start }}</td>  
+                  <td class="grey" >{{ event.minute_of_start }}</td>
+
+                  <td class="blue" >{{ event.year_of_end }}</td> 
+                    
+                  <td class="blue" >{{ event.mounth_of_end }}</td>  
+                  <td class="blue" >{{ event.day_of_end }}</td>
+                   
+                  <td class="blue" >{{ event.hour_of_end }}</td>  
+                  <td class="blue" >{{ event.minute_of_end }}</td>
                   
-                  <td>{{event.deltatime}}</td>
-                  
+                  {% if  event.deltatime > 0  %}
+                    <td >{{ event.deltatime }}</td>
+                   
+                  {% else %}
+                    <td class="red">{{ event.deltatime }}</td>
+                  {% endif %}
                   <td>{{ event.mainproblem }}</td> 
                   <td>{{ event.detailproblem }}</td> 
                   <td>{{ event.Bank }}</td> 
@@ -140,7 +160,13 @@
                   <td>{{ event.Connection }}</td>  
                   <td>{{ event.IncidentID }}</td> 
                   <td>{{ event.DownTime }}</td> 
-                  <td>{{ event.ReportToDepartment }}</td> 
+                  
+
+
+                  <td>{{ event.Assign_to_name1 }}</td> 
+                  <td>{{ event.Assign_to_name2 }}</td> 
+                  <td>{{ event.Assign_to_name3 }}</td> 
+                  <td>{{ event.Assign_to_name4 }}</td> 
                   
                   <td>{{ event.Assigng_to_others }}</td> 
                   <td>{{ event.SMS }}</td> 
@@ -155,6 +181,7 @@
                      <a href="/eventdelete/{{ event.id }}"><span class="del-button" >Delete</span></a>  
                      
                   </td>
+                  
                   
                  </tr>  
               {% endfor %}

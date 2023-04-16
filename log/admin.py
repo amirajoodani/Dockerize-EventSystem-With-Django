@@ -75,15 +75,15 @@ class Push_OrganizationAdmin(admin.ModelAdmin):
 admin.site.register(Push_Organization,Push_OrganizationAdmin)
 
 class E1MPLSAdmin(admin.ModelAdmin):
-  list_filter = ('start_date','end_date')
-  list_display = ('start_date','end_date')
-  search_fields = ['start_date']
+  list_filter = ('day_of_start','day_of_end')
+  list_display = ('day_of_start','day_of_end')
+  search_fields = ['day_of_start']
 admin.site.register(E1MPLS,E1MPLSAdmin)
 
 class PushAdmin(admin.ModelAdmin):
-  list_filter = ('start_date','end_date')
-  list_display = ('start_date','end_date')
-  search_fields = ['start_date']
+  list_filter = ('day_of_start','day_of_end')
+  list_display = ('day_of_start','day_of_end')
+  search_fields = ['day_of_end']
 admin.site.register(Push,PushAdmin)
 
 class AccessAdmin(admin.ModelAdmin):

@@ -160,7 +160,7 @@ class EventKindofProblem(models.Model):
     day_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True)
     #mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     mounth_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True)
-    #year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True)
     year_of_start = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True)
     #hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     hour_of_start = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
@@ -248,6 +248,75 @@ class EventKindofProblem(models.Model):
         deltahour=0
         deltamin=0
         deltamintotal=0
+        
+        if self.mounth_of_end  !=None:
+            deltamounth = (self.mounth_of_end - self.mounth_of_start)*43800
+        else:
+            deltamounth=0
+
+        if self.year_of_end !=None:
+            deltayear = (self.year_of_end - self.year_of_start)*525600
+        else:
+            deltayear=0
+
+        if self.hour_of_end !=None:
+            deltahour = (self.hour_of_end - self.hour_of_start)*60
+        else:
+            deltahour=0
+
+        if self.minute_of_end  !=None:
+            deltamin = (self.minute_of_end - self.minute_of_start)
+        else:  deltamin=0
+
+        if self.day_of_end  !=None:
+            deltaday= (self.day_of_end - self.day_of_start)*1440
+        else:
+            deltaday=0
+
+        deltamintotal=deltayear+deltamounth+deltaday+deltahour+deltamin
+        if deltamintotal==0 or deltamintotal <=0:
+          return ('open')
+        else:
+            return deltamintotal
+        
+   
+
+class E1MPLS(models.Model):
+    class Meta:
+        app_label = 'log'
+    day_of_start = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #day_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True)
+    mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #mounth_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True)
+    year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #year_of_start = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True)
+    hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #hour_of_start = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    #minute_of_start =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True)
+    day_of_end = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #day_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True,blank=True)
+    mounth_of_end = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #mounth_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True,blank=True)
+    year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #year_of_end = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True,blank=True)
+    hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #hour_of_end = models.IntegerField(blank=True,validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    #minute_of_end =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True,blank=True)
+    Connection=models.ForeignKey(Connection,on_delete=models.SET_NULL,null=True,blank=True,related_name='Connection+')
+    city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
+    IncidentID=models.IntegerField(blank=True,null=True)
+    description = models.TextField(max_length=255)
+    
+    @property
+    def deltatime(self):
+        deltaday=0
+        deltamounth=0
+        deltayear=0
+        deltahour=0
+        deltamin=0
+        deltamintotal=0
         if self.mounth_of_end and self.mounth_of_start !=None:
             deltamounth = (self.mounth_of_end - self.mounth_of_start)*43800
         else:
@@ -274,21 +343,6 @@ class EventKindofProblem(models.Model):
 
         deltamintotal=deltayear+deltamounth+deltaday+deltahour+deltamin
         return deltamintotal
-   
-
-class E1MPLS(models.Model):
-    class Meta:
-        app_label = 'log'
-    name =  models.CharField(max_length=255)
-    start_date = jmodels.jDateTimeField()
-    end_date = jmodels.jDateTimeField(null=True,blank=True) 
-    status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'))
-    status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
-    Connection=models.ForeignKey(Connection,on_delete=models.SET_NULL,null=True,blank=True,related_name='Connection+')
-    city= models.ForeignKey(city,on_delete=models.SET_NULL,null=True,blank=True,related_name='city+')
-    IncidentID=models.IntegerField(blank=True,null=True)
-    description = models.TextField(max_length=255)
-    
     def __str__(self):
         return self.name
     class Meta:  
@@ -297,13 +351,61 @@ class E1MPLS(models.Model):
 class Push(models.Model):
     class Meta:
         app_label = 'log'
-    name =  models.CharField(max_length=255)
-    start_date = jmodels.jDateTimeField()
-    end_date = jmodels.jDateTimeField(null=True,blank=True)
-    status_choice = (('open','OPEN'),('in progress','IN PROGRESS'),('close','CLOSE'))
-    status = models.CharField(choices=status_choice,max_length=25,null=True,blank=True)
+    day_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True)
+    #mounth_of_start = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    mounth_of_start = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True)
+    #year_of_start = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    year_of_start = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True)
+    #hour_of_start = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    hour_of_start = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    #minute_of_start =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
+    minute_of_start =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True)
+    #day_of_end = models.ForeignKey(day,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    day_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(31)],null=True,blank=True)
+    #mounth_of_end = models.ForeignKey(mounth,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    mounth_of_end = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)],null=True,blank=True)
+    #year_of_end = models.ForeignKey(year,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    year_of_end = models.IntegerField(validators=[MinValueValidator(1401), MaxValueValidator(1500)],null=True,blank=True)
+    #hour_of_end = models.ForeignKey(hour,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    hour_of_end = models.IntegerField(blank=True,validators=[MinValueValidator(0), MaxValueValidator(24)],null=True)
+    #minute_of_end =  models.ForeignKey(minute,on_delete=models.SET_NULL,null=True,blank=True,related_name='auth.user+')
+    minute_of_end =  models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)],null=True,blank=True)
     organization=models.ForeignKey(Push_Organization,on_delete=models.SET_NULL,null=True,related_name='auth.user+')
     description = models.TextField(max_length=255)
+    @property
+    def deltatime(self):
+        deltaday=0
+        deltamounth=0
+        deltayear=0
+        deltahour=0
+        deltamin=0
+        deltamintotal=0
+        if self.mounth_of_end and self.mounth_of_start !=None:
+            deltamounth = (self.mounth_of_end - self.mounth_of_start)*43800
+        else:
+            deltamounth=0
+
+        if self.year_of_end and self.year_of_start !=None:
+            deltayear = (self.year_of_end - self.year_of_start)*525600
+        else:
+            deltayear=0
+
+        if self.hour_of_end and self.hour_of_start !=None:
+            deltahour = (self.hour_of_end - self.hour_of_start)*60
+        else:
+            deltahour=0
+
+        if self.minute_of_end and self.minute_of_start !=None:
+            deltamin = (self.minute_of_end - self.minute_of_start)
+        else:  deltamin=0
+
+        if self.day_of_end and self.day_of_start !=None:
+            deltaday= (self.day_of_end - self.day_of_start)*1440
+        else:
+            deltaday=0
+
+        deltamintotal=deltayear+deltamounth+deltaday+deltahour+deltamin
+        return deltamintotal
     def __str__(self):
         return self.name
     class Meta:  

@@ -66,6 +66,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
+    'jet.dashboard',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,12 +78,8 @@ INSTALLED_APPS = [
     'django_jalali',
     'jalali_date',
     'django_filters',
-    'jet',
-    'jet.dashboard',
     'simple_history',
     'mathfilters',
-    
-   
     'crispy_forms',
     
     
@@ -195,25 +193,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+#PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
+#STATICFILES_DIRS = (
+#    os.path.join(PROJECT_ROOT, 'static'),
+#)
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
-MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 LANGUAGE_CODE = 'en-us'
-import locale
-locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
 
-CACHES = {
-        "default":{
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient"
-            },
-            "KEY_PREFIX":"SADADLOG"
-        }
-}

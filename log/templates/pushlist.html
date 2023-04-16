@@ -1,0 +1,138 @@
+
+
+{% block content %}
+{% load mathfilters %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>  
+<html lang="en">  
+   <head>  
+     <meta charset="UTF-8">   
+      {% load static %}  
+     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">  
+   </head>
+
+  <body>
+    <div class="navbar" id="myHeader">
+      <div>
+       <a href="{% url 'eventlist' %}">لیست رویدادها</a>
+       <a href="{% url 'event' %}">ثبت رویداد </a>
+       <a href="{% url 'pushlist' %}">لیست پوش   </a>
+       <a href="{% url 'push' %}">ثبت پوش  </a>
+       
+      </div>
+       <a href="{% url 'logout' %}" class="right">خروج</a>
+    </div>
+  <form method="get" > 
+    <div class="search">
+        <div class="row">
+          <div class="rowelement">
+            {{ myFilter.form.day_of_start| as_crispy_field }} 
+          </div>
+          <div class="rowelement">
+            {{ myFilter.form.day_of_start_gt| as_crispy_field }}
+          </div>
+          <div class="rowelement">
+            {{ myFilter.form.day_of_start_lt| as_crispy_field }}
+          </div >
+          <div class="rowelement">
+           {{ myFilter.form.mounth_of_start| as_crispy_field }}
+          </div>
+          <div class="rowelement">
+            {{ myFilter.form.mounth_of_start_gt| as_crispy_field }}
+          </div>
+          <div class="rowelement">
+            {{ myFilter.form.mounth_of_start_lt| as_crispy_field }}
+          </div> 
+          <div class="rowelement">
+            {{ myFilter.form.hour_of_start| as_crispy_field }}
+          </div> 
+          <div>
+            {{ myFilter.form.hour_of_end| as_crispy_field }}
+          </div>
+          <div class="rowelement">
+            {{ myFilter.form.day_of_end| as_crispy_field }}
+          </div> 
+          <div class="rowelement">
+            {{ myFilter.form.mounth_of_end| as_crispy_field }}
+          </div class="rowelement"> 
+          <div class="rowelement">
+            {{ myFilter.form.organization| as_crispy_field }}
+          </div>
+          <div class="searchbutton">
+            <button type="submit" class="button">Search</button>
+          </div>
+          <div class="downloadcsvbutton">
+            <a class="button" href="{% url 'get_csv' %}?{{ request.GET.urlencode }}">Download CSV</a>
+          </div>
+          
+        </div>
+    </div>
+  </form>
+    <div >
+      <table class="table table-striped table-bordered table-sm">
+          <thead class="thead-dark">
+              <tr>
+                <th scope="col"> شناسه </th>  
+                  <th scope="col"> روز شروع</th>  
+                  <th scope="col"> ماه شروع</th>  
+                  <th scope="col"> سال شروع </th>
+                  <th scope="col">  ساعت شروع</th>
+                  <th scope="col">  دقیقه شروع</th>
+                  <th scope="col"> روز پایان</th>  
+                  <th scope="col">ماه پایان</th>  
+                  <th scope="col"> سال  پایان</th>
+                  <th scope="col"> ساعت پایان</th>
+                  <th scope="col">دقیقه پایان </th>
+                  <th scope="col">مدت زمان  </th>
+                  <th scope="col">سازمان  </th>
+                  <th scope="col">جزییات  </th>
+                  <th scope="col">اقدام</th>
+                  
+                </tr>  
+          </thead>
+          <tbody>  
+              {% for push in pushs %}  
+                 <tr>  
+                  <td>{{ push.id }}</td>
+                  <td>{{ push.day_of_start }}</td>  
+                  <td>{{ push.mounth_of_start }}</td>  
+                  <td>{{ push.year_of_start }}</td>  
+                  <td>{{ push.hour_of_start }}</td>  
+                  <td>{{ push.minute_of_start }}</td>  
+                  <td>{{ push.day_of_end }}</td>  
+                  <td>{{ push.mounth_of_end }}</td>  
+                  <td>{{ push.year_of_end }}</td>  
+                  <td>{{ push.hour_of_end }}</td>  
+                  <td>{{ push.minute_of_end }}</td>
+                  <td>{{ push.deltatime}}</td>
+                  <td>{{ push.organization }}</td> 
+                  <td>{{ push.description }}</td>
+                  
+                  
+
+                 
+                  <td>  
+                     <a href="/pushedit/{{push.id}}"><span class="button" >Edit</span></a>  
+                     
+                     <a href="/pushdelete/{{push.id }}"><span class="del-button" >Delete</span></a>  
+                     
+                  </td>
+                  
+                 </tr>  
+              {% endfor %}
+            
+                
+               
+          </tbody>
+      </table>
+
+      
+       
+    </div>
+        
+  </body>
+
+</html> 
+{% endblock %} 

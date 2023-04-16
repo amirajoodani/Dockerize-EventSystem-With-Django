@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4:5.5
+    restart: always
+    environment:
+     PGADMIN_DEFAULT_EMAIL: noc@sadadpsp.ir
+     PGADMIN_DEFAULT_PASSWORD: NOCnocNOC@123
+     PGADMIN_LISTEN_PORT: 5433
+    ports:
+     - "5433:5433"
+    volumes:
+     - pgadmin:/var/lib/pgadmin
+    networks:
+     - logapp_network
+  
+volumes:
+
+  pgadmin:
+    name: pgadmin
+
+networks:
+  logapp_network:
+    external: true
+

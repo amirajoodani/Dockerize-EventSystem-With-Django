@@ -3,14 +3,15 @@ version: '3'
 services:
   nginx:
     container_name: nginx
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:
-      - blogpy_static_volume:/logapp/static
-      - blogpy_files_volume:/blogpy/media
+      - logapp_static_volume:/logapp/static
+      - logapp_files_volume:/logapp/media
     networks:
       - nginx_network
 

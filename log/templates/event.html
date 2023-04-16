@@ -21,6 +21,8 @@
       <div>
        <a href="{% url 'eventlist' %}">لیست رویدادها</a>
        <a href="{% url 'event' %}">ثبت رویداد </a>
+       
+       
       </div>
        <a href="{% url 'logout' %}" class="right">خروج</a>
     </div> 
@@ -32,9 +34,7 @@
         {% csrf_token %} 
          
       <br>  
-      <div class="form-group row">  
-        
-      </div>  
+      
       {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -50,154 +50,150 @@
         {% endfor %}
       {% endif %}
     
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label"> (*)روز شروع  </label>  
-        <div class="col-sm-4">  
-          {{ form.day_of_start | as_crispy_field }}  
+      <div class="row3">
+        <div>
+        <label >(1401-1500)*سال شروع </label>    
+          {{ form.year_of_start  | as_crispy_field}} 
         </div>
-        
-      
-        <label class="col-sm-2 col-form-label">(*)ماه شروع  </label>  
-        <div class="col-sm-4">  
-          {{ form.mounth_of_start  | as_crispy_field }}  
+        <div> 
+        <label>(1-12)*ماه شروع  </label>  
+          {{ form.mounth_of_start  | as_crispy_field }}
         </div> 
-        
-        <label class="col-sm-2 col-form-label">(*)سال شروع </label>  
-        <div class="col-sm-4">  
-          {{ form.year_of_start  | as_crispy_field}}  
+        <div> 
+        <label> (1-31)*روز شروع  </label>  
+          {{ form.day_of_start | as_crispy_field }}
         </div>
-        
-        <label class="col-sm-2 col-form-label">(*)ساعت شروع</label>  
-        <div class="col-sm-4">  
-          {{ form.hour_of_start | as_crispy_field}}  
+        <div>  
+        <label >(0-24)*ساعت شروع</label>  
+          {{ form.hour_of_start | as_crispy_field}} 
         </div>
-        
-        <label class="col-sm-2 col-form-label">(*)دقیقه شروع</label>  
-        <div class="col-sm-4">  
-          {{ form.minute_of_start | as_crispy_field}}  
+        <div> 
+        <label >(0-59)*دقیقه شروع</label>  
+          {{ form.minute_of_start | as_crispy_field}}
         </div> 
-                       
       </div> 
     
     
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label"> روز پایان </label>  
-        <div class="col-sm-4">  
-          {{ form.day_of_end | as_crispy_field}}  
-        </div> 
+      <div class="row3">  
         
-        <label class="col-sm-2 col-form-label">ماه پایان  </label>  
-        <div class="col-sm-4">  
+        <div > 
+          <label >سال پایان </label>  
+           
+            {{ form.year_of_end | as_crispy_field}}  
+          </div> 
+        
+        
+        <div > 
+        <label >ماه پایان  </label>   
           {{ form.mounth_of_end | as_crispy_field}}  
         </div> 
-        <label class="col-sm-2 col-form-label">سال پایان </label>  
-        <div class="col-sm-4">  
-          {{ form.year_of_end | as_crispy_field}}  
-        </div> 
-        <label class="col-sm-2 col-form-label">ساعت پایان</label>  
-        <div class="col-sm-4">  
+
+        <div>
+          <label> روز پایان </label>  
+            {{ form.day_of_end | as_crispy_field}}  
+          </div> 
+        
+        <div >  
+        <label >ساعت پایان</label>  
+        
           {{ form.hour_of_end | as_crispy_field}}  
         </div>
-        <label class="col-sm-2 col-form-label">دقیقه پایان</label>  
-        <div class="col-sm-4">  
-          {{ form.minute_of_end | as_crispy_field}}  
+        <div >  
+        <label>دقیقه پایان</label>  
+        
+          {{ form.minute_of_end | as_crispy_field}} 
         </div>     
-      </div>    
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">مشکل اصلی (*)</label>  
-        <div class="col-sm-4">  
-          {{ form.mainproblem | as_crispy_field}}  
-        </div> 
-        <label class="col-sm-2 col-form-label">جزییات(*)</label>  
-        <div class="col-sm-4">  
-          {{ form.detailproblem | as_crispy_field}}  
-        </div>   
       </div>
-    
-        
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">بانک : </label>  
-        <div class="col-sm-4">  
-          {{ form.Bank | as_crispy_field}}  
-        </div> 
-        <label class="col-sm-2 col-form-label">تصویر یا فایل : </label>  
-        <div class="col-sm-4">  
-          {{ form.image | as_crispy_field}}  
-        </div>   
-      </div> 
+
       
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">شهر : </label>  
-        <div class="col-sm-4">  
-          {{ form.city | as_crispy_field}}  
+      <div class="row3">  
+        <div>
+          <label >مشکل اصلی (*)</label>   
+          {{ form.mainproblem | as_crispy_field}} 
+        </div>
+        <div > 
+          <label>جزییات(*)</label>  
+          {{ form.detailproblem | as_crispy_field}}  
+        </div>
+        <div > 
+          <label>بانک  </label>  
+          {{ form.Bank | as_crispy_field}} 
         </div> 
+        <div >  
+          <label >تصویر یا فایل  </label>  
+          {{ form.image | as_crispy_field}}  
+        </div>
         
-        <label class="col-sm-2 col-form-label">نوع ارتباط : </label>  
-        <div class="col-sm-4">  
-          {{ form.Connection | as_crispy_field}}  
+          <div>
+          <label >نوع ارتباط : </label>  
+            
+            {{ form.Connection | as_crispy_field}}  
+          </div> 
+             
+      </div>
+      
+      <div class="row3">
+        <div>    
+        <label >شهر : </label>  
+          {{ form.city | as_crispy_field}}  
         </div>  
+        <div> 
+        <label >شماره اینسیدنت</label>  
+          
+          {{ form.IncidentID | as_crispy_field}}  
+        </div> 
+        <div> 
+          <label >تغییرات</label>
+           {{ form.DownTime  | as_crispy_field }}  
+        </div> 
+        <div >  
+        
       </div>  
      
     
-      <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">Incident ID</label>  
-        <div class="col-sm-4">  
-          {{ form.IncidentID | as_crispy_field}}  
-        </div> 
-        <label class="col-sm-2 col-form-label"> DownTime</label>  
-        <div class="col-sm-4">  
-           {{ form.DownTime  | as_crispy_field }}  
-        </div>    
       
     
-    
         
-      </div> 
+      
     
-        <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">گزارش داده شده به واحد </label>  
-        <div class="col-sm-4">  
-          {{ form.ReportToDepartment | as_crispy_field}}  
-        </div>  
-      </div> 
-    
-        <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">نام کارشناس اول </label>  
-        <div class="col-sm-4">  
+    </div> 
+      
+    <div class="row3">
+        <div >  
+        <label >نام کارشناس  </label>    
           {{ form.Assign_to_name1 | as_crispy_field}}  
         </div>
-        <label class="col-sm-2 col-form-label">نام کارشناس دوم </label>  
-        <div class="col-sm-4">  
+        <div>
+        <label >نام کارشناس  </label>  
+         
           {{ form.Assign_to_name2 | as_crispy_field}}  
         </div>
-      </div>
-        
-        <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">نام کارشناس سوم </label>  
-        <div class="col-sm-4">  
+        <div >  
+        <label >نام کارشناس  </label>    
           {{ form.Assign_to_name3 | as_crispy_field}}  
         </div> 
-        <label class="col-sm-2 col-form-label">نام کارشناس چهارم  </label>  
-        <div class="col-sm-4">  
+        <div>
+        <label >نام کارشناس   </label>   
           {{ form.Assign_to_name4 | as_crispy_field}}  
-        </div>           
-      </div>
-    
-        <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">سایر</label>  
-        <div class="col-sm-4">  
+        </div> 
+    </div>          
+   
+    <div class="row3">
+        <div >  
+        <label >سایر</label>  
           {{ form.Assigng_to_others | as_crispy_field}}  
         </div> 
-        <label class="col-sm-2 col-form-label">SMS</label>  
-        <div class="col-sm-4">  
+       
+        <div > 
+          <label >پیامک</label> 
           {{ form.SMS | as_crispy_field}}  
         </div>   
-      </div> 
+     </div> 
     
-         
-        <div class="form-group row">  
-        <label class="col-sm-2 col-form-label">توضیحات (*)</label>  
-        <div class="col-sm-4">  
+     
+      <div class="row3">  
+        <label >توضیحات (*)</label>  
+        <div >  
           {{ form.description | as_crispy_field}}  
         </div>  
       </div> 
@@ -205,9 +201,9 @@
       
         
         <br><br>
-        <div class="form-group row">  
-        <label class="col-sm-1 col-form-label"></label>  
-        <div class="col-sm-4">  
+        <div >  
+        <label ></label>  
+        <div >  
         <button type="submit" class="button">Submit</button>  
         </div>  
       </div>  
@@ -233,7 +229,7 @@
 
 
     <div class="footer">
-      <h2>تمامی حقوق متعلق به شرکت پرداخت الکترونیک سداد می باشد </h2> 
+      <h2> <a href="https://github.com/amirajoodani">@amirajoodani </a>  </h2> 
     </div>
     
     

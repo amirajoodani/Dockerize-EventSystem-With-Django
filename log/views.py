@@ -9,10 +9,10 @@ from django.http import HttpResponse
 from django.urls import path
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from log.forms import EventForm , responsetimeform
-from log.models import EventKindofProblem , ResponseTime
+from log.forms import EventForm , responsetimeform , pushform , E1MPLSform
+from log.models import EventKindofProblem , ResponseTime , Push
 from django.contrib import messages
-from django.views.generic.edit import UpdateView ,CreateView
+from django.views.generic.edit import UpdateView ,CreateView , DeleteView
 from django.http import FileResponse
 import io
 from django.views.generic import FormView
@@ -23,19 +23,21 @@ from reportlab.lib.pagesizes import letter
 #from somewhere import handle_uploaded_file
 from django.views.decorators.cache import cache_page
 from .filters import eventfilter
+from .filters import pushfilter , E1MPLSfilter
 from django.db.models import F
 import djqscsv
 from excel_response import ExcelResponse
 import csv 
 from django.urls import reverse_lazy
 #from .forms import CreateEventForm
-from .models import EventMainProblem ,EventDetailProblem
-
-
+from .models import EventMainProblem ,EventDetailProblem ,E1MPLS
+import datetime
+#CreateList-------------------------------------------------------------------
 
 def event(request):
     context ={}
     events=EventForm()
+    print("user",request.user.username, "Logined into Event",datetime.datetime.now())
     #print("OK")
     if request.method == 'POST':
         #image=request.FILES['image']
@@ -50,8 +52,47 @@ def event(request):
             #messages.error(request, "Error")
     context={'form': events}
     return render(request,'event.html',context)
+
+
+def push(request):
+    context ={}
+    pushs=pushform()
+    #print("OK")
+    if request.method == 'POST':
+        #image=request.FILES['image']
+        #print('printing POST:' , request.POST)
+        pushs=pushform(request.POST, request.FILES)
+        if pushs.is_valid():
+            pushs.save()
+            return redirect('/pushlist/')
+        else:
+            print("Error")
+            print(pushs.errors)
+            #messages.error(request, "Error")
+    context={'form': pushs}
+    return render(request,'push.html',context)
+
+
+def E1MPLScreate(request):
+    context ={}
+    E1MPLSs=E1MPLSform()
+    #print("OK")
+    if request.method == 'POST':
+        #image=request.FILES['image']
+        #print('printing POST:' , request.POST)
+        E1MPLSs=E1MPLSform(request.POST, request.FILES)
+        if E1MPLSs.is_valid():
+            E1MPLSs.save()
+            return redirect('/E1MPLSlist/')
+        else:
+            print("Error")
+            print(E1MPLSs.errors)
+            #messages.error(request, "Error")
+    context={'form': E1MPLSs}
+    return render(request,'E1MPLS.html',context)
         
 
+#UpdateView-----------------------------------------------------------------------
 
 class EventUpdateView(UpdateView):
     
@@ -64,11 +105,29 @@ class EventUpdateView(UpdateView):
     success_url ="/eventlist/"
     #success_url = reverse_lazy('/eventlist/')
 
+class PushUpdateView(UpdateView):
+    
+    fields = '__all__'
+    #fields = ['image']
+    template_name = 'pushupdate.html'
+    #form = 'pushForm'
+    model = Push
+    
+    success_url ="/pushlist/"
+    #success_url = reverse_lazy('/eventlist/')
 
+class E1MPLSUpdateView(UpdateView):
+    
+    fields = '__all__'
+    #fields = ['image']
+    template_name = 'E1MPLSupdate.html'
+    #form = 'pushForm'
+    model = E1MPLS
+    
+    success_url ="/E1MPLSlist/"
+    #success_url = reverse_lazy('/eventlist/')
 
-
-
-
+#EditView------------------------------------------------------------------------
 
 def eventedit(request, id): 
     context ={} 
@@ -93,6 +152,57 @@ def eventedit(request, id):
    
     return render(request, 'eventedit.html',{'event':event } ) 
 
+
+def pushedit(request, id): 
+    context ={} 
+    
+    push = Push.objects.get(id=id) 
+    form = pushform(request.POST , instance=push )
+    print("ok")
+    #year_of_start=request.POST.get('year_of_start')
+    #form.fields['year_of_start'].choices = [(year_of_start,year_of_start)]
+    if request.method=='POST':
+        form = pushform(request.POST , instance=push )
+        if form.is_valid():   
+            form.save() 
+            print('printing POST:' , request.POST)  
+            print("ok")
+            #print("user",request.user.username, "Edit the Event","id",id)
+            return HttpResponseRedirect('/pushlist/')
+        else:
+            print("Error")
+            print(form.errors)
+            messages.error(request, "Error")
+   
+    return render(request, 'pushupdate.html',{'push':push } ) 
+
+
+def E1MPLSedit(request, id): 
+    context ={} 
+    
+    E1MPLSs =E1MPLS.objects.get(id=id) 
+    form = E1MPLSform(request.POST , instance=E1MPLSs )
+    print("ok")
+    #year_of_start=request.POST.get('year_of_start')
+    #form.fields['year_of_start'].choices = [(year_of_start,year_of_start)]
+    if request.method=='POST':
+        form = E1MPLSform(request.POST , instance=E1MPLS )
+        if form.is_valid():   
+            form.save() 
+            print('printing POST:' , request.POST)  
+            print("ok")
+            #print("user",request.user.username, "Edit the Event","id",id)
+            return HttpResponseRedirect('/E1MPLSlist/')
+        else:
+            print("Error")
+            print(form.errors)
+            messages.error(request, "Error")
+   
+    return render(request, 'E1MPLSupdate.html',{'E1MPLS':E1MPLS } ) 
+
+
+#update--------------------------------------------------------------------------------------
+
    
 
 def eventupdate(request, id): 
@@ -103,9 +213,33 @@ def eventupdate(request, id):
 
 
 
+def pushupdate(request, id): 
+    push = Push.objects.get(id=id)
+    #print(request.username)
+    #print("user",request.user.username, "update the Event","id",id)
+    return render(request, 'pushupdate.html',{'push':push } ) 
+
+def E1MPLSupdate(request, id): 
+    E1MPLS = E1MPLS.objects.get(id=id)
+    #print(request.username)
+    #print("user",request.user.username, "update the Event","id",id)
+    return render(request, 'E1MPLsupdate.html',{'E1MPLS':E1MPLS } ) 
+
+
+#List--------------------------------------------------------------------------------------
+
+
+
+
 def eventlist(request):
     allevent=EventKindofProblem.objects.all().order_by('-id')[:5]
     events = EventKindofProblem.objects.all().order_by('-id')
+    print("user",request.user.username, "Logined into Eventlist",datetime.datetime.now())
+    #print(request.datetime.datetime.now())
+        #id=request.POST['id']
+        #print("id",id)
+        #print("day_of_start",event.day_of_start)
+        #print(request.user.username)
     #export_to_CSV = forms.BooleanField(Required=False)
     myFilter=eventfilter(request.GET,queryset=events)
     events=myFilter.qs
@@ -113,6 +247,31 @@ def eventlist(request):
     context ={'events':events ,'myFilter':myFilter }
     return render(request,'eventlist.html',context)
 
+
+
+
+def pushlist(request):
+    allpush=Push.objects.all().order_by('-id')[:5]
+    pushs = Push.objects.all().order_by('-id')
+    #export_to_CSV = forms.BooleanField(Required=False)
+    myFilter=pushfilter(request.GET,queryset=pushs)
+    pushs=myFilter.qs
+    form=pushform()
+    context ={'pushs':pushs ,'myFilter':myFilter }
+    return render(request,'pushlist.html',context)
+
+def E1MPLSlist(request):
+    allE1MPLS = E1MPLS.objects.all().order_by('-id')[:5]
+    E1MPLSs = E1MPLS.objects.all().order_by('-id')
+    #export_to_CSV = forms.BooleanField(Required=False)
+    myFilter=E1MPLSfilter(request.GET,queryset=E1MPLSs)
+    E1MPLSs=myFilter.qs
+    form=E1MPLSform()
+    context ={'E1MPLSs':E1MPLSs ,'myFilter':myFilter }
+    return render(request,'E1MPLSlist.html',context)
+
+
+#-----------------------------------------------------------------------------------
 
 # Generate a PDF File Form events
 
@@ -194,7 +353,7 @@ def get_csv(request):
 	
 		
 		
-
+#Delete----------------------------------------------------------------------------
 
 def eventdestroy(request, id):  
     event = EventKindofProblem.objects.get(id=id)
@@ -214,7 +373,49 @@ def eventdestroy(request, id):
         
  
     return render(request, "eventdelete.html", context) 
-    
+
+
+def pushdestroy(request, id):  
+    push = push.objects.get(id=id)
+    context ={} 
+    if request.method =="POST":
+        # delete object
+        push.delete()
+        # after deleting redirect to
+        # home page
+        print("user",request.user.username, "Deleted the Push ","id",id)
+        #print(request.datetime.datetime.now())
+        #id=request.POST['id']
+        #print("id",id)
+        #print("day_of_start",event.day_of_start)
+        #print(request.user.username)
+        return HttpResponseRedirect("/pushlist/")
+        
+ 
+    return render(request, "pushdelete.html", context) 
+
+def E1MPLSdestroy(request, id):  
+    E1MPLS = E1MPLS.objects.get(id=id)
+    context ={} 
+    if request.method =="POST":
+        # delete object
+        E1MPLS.delete()
+        # after deleting redirect to
+        # home page
+        print("user",request.user.username, "Deleted the E1MPLS ","id",id)
+        #print(request.datetime.datetime.now())
+        #id=request.POST['id']
+        #print("id",id)
+        #print("day_of_start",event.day_of_start)
+        #print(request.user.username)
+        return HttpResponseRedirect("/E1MPLSlist/")
+        
+ 
+    return render(request, "E1MPLSdelete.html", context) 
+
+#-------------------------------------------------------------------------------------
+
+
 
 def home(request):
     return render(request,"registration/home.html")
@@ -280,3 +481,9 @@ def load_problems(request):
     # data = [{'id': problem.pk, 'name': problem.name} for problem in event_detail_problems]
     # print(data)
     return render(request, 'datiled_event_options.html', {'detailedproblems':  event_detail_problems})
+
+
+
+
+
+

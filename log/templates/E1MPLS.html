@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+{% block content %}
+{% load jformat %}
+{% load static %}
+{% csrf_token %}
+{% load crispy_forms_tags %}
+
+<html lang="en">  
+  <head>  
+     <meta charset="UTF-8">  
+     <title>E1MPLS</title>  
+     <link rel="stylesheet" href="{% static 'css/event.css' %}"/> 
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="navbar" id="myHeader">
+
+      <div>
+       <a href="{% url 'eventlist' %}">لیست رویدادها</a>
+       <a href="{% url 'event' %}">ثبت رویداد </a>
+       
+      </div>
+       <a href="{% url 'logout' %}" class="right">خروج</a>
+    </div> 
+
+    
+
+    <div class="E1mplsform">
+      <form method="POST" class="post-form" action="/E1MPLS/{{ E1MPLS.id }}" enctype="multipart/form-data"> 
+        {% csrf_token %} 
+         
+      <br>  
+      <div class="form-group row">  
+        
+      </div>  
+      {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ field.label }}</strong> : <span>{{ error|escape }}</span></strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+      {% endif %}
+    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label"> (*)روز شروع  </label>  
+        <div class="col-sm-4">  
+          {{ form.day_of_start | as_crispy_field }}  
+        </div>
+        
+      
+        <label class="col-sm-2 col-form-label">(*)ماه شروع  </label>  
+        <div class="col-sm-4">  
+          {{ form.mounth_of_start  | as_crispy_field }}  
+        </div> 
+        
+        <label class="col-sm-2 col-form-label">(*)سال شروع </label>  
+        <div class="col-sm-4">  
+          {{ form.year_of_start  | as_crispy_field}}  
+        </div>
+        
+        <label class="col-sm-2 col-form-label">(*)ساعت شروع</label>  
+        <div class="col-sm-4">  
+          {{ form.hour_of_start | as_crispy_field}}  
+        </div>
+        
+        <label class="col-sm-2 col-form-label">(*)دقیقه شروع</label>  
+        <div class="col-sm-4">  
+          {{ form.minute_of_start | as_crispy_field}}  
+        </div> 
+                       
+      </div> 
+    
+    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label"> روز پایان </label>  
+        <div class="col-sm-4">  
+          {{ form.day_of_end | as_crispy_field}}  
+        </div> 
+        
+        <label class="col-sm-2 col-form-label">ماه پایان  </label>  
+        <div class="col-sm-4">  
+          {{ form.mounth_of_end | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">سال پایان </label>  
+        <div class="col-sm-4">  
+          {{ form.year_of_end | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">ساعت پایان</label>  
+        <div class="col-sm-4">  
+          {{ form.hour_of_end | as_crispy_field}}  
+        </div>
+        <label class="col-sm-2 col-form-label">دقیقه پایان</label>  
+        <div class="col-sm-4">  
+          {{ form.minute_of_end | as_crispy_field}}  
+        </div>     
+      </div>    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">مشکل اصلی (*)</label>  
+        <div class="col-sm-4">  
+          {{ form.mainproblem | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">جزییات(*)</label>  
+        <div class="col-sm-4">  
+          {{ form.detailproblem | as_crispy_field}}  
+        </div>   
+      </div>
+    
+        
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">بانک : </label>  
+        <div class="col-sm-4">  
+          {{ form.Bank | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">تصویر یا فایل : </label>  
+        <div class="col-sm-4">  
+          {{ form.image | as_crispy_field}}  
+        </div>   
+      </div> 
+      
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">شهر : </label>  
+        <div class="col-sm-4">  
+          {{ form.city | as_crispy_field}}  
+        </div> 
+        
+        <label class="col-sm-2 col-form-label">نوع ارتباط : </label>  
+        <div class="col-sm-4">  
+          {{ form.Connection | as_crispy_field}}  
+        </div>  
+      </div>  
+     
+    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">Incident ID</label>  
+        <div class="col-sm-4">  
+          {{ form.IncidentID | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label"> DownTime</label>  
+        <div class="col-sm-4">  
+           {{ form.DownTime  | as_crispy_field }}  
+        </div>    
+      
+    
+    
+        
+      </div> 
+    
+        <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">گزارش داده شده به واحد </label>  
+        <div class="col-sm-4">  
+          {{ form.ReportToDepartment | as_crispy_field}}  
+        </div>  
+      </div> 
+    
+        <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">نام کارشناس اول </label>  
+        <div class="col-sm-4">  
+          {{ form.Assign_to_name1 | as_crispy_field}}  
+        </div>
+        <label class="col-sm-2 col-form-label">نام کارشناس دوم </label>  
+        <div class="col-sm-4">  
+          {{ form.Assign_to_name2 | as_crispy_field}}  
+        </div>
+      </div>
+        
+        <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">نام کارشناس سوم </label>  
+        <div class="col-sm-4">  
+          {{ form.Assign_to_name3 | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">نام کارشناس چهارم  </label>  
+        <div class="col-sm-4">  
+          {{ form.Assign_to_name4 | as_crispy_field}}  
+        </div>           
+      </div>
+    
+        <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">سایر</label>  
+        <div class="col-sm-4">  
+          {{ form.Assigng_to_others | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">SMS</label>  
+        <div class="col-sm-4">  
+          {{ form.SMS | as_crispy_field}}  
+        </div>   
+      </div> 
+    
+         
+        <div class="form-group row">  
+        <label class="col-sm-2 col-form-label">توضیحات (*)</label>  
+        <div class="col-sm-4">  
+          {{ form.description | as_crispy_field}}  
+        </div>  
+      </div> 
+    
+      
+        
+        <br><br>
+        <div class="form-group row">  
+        <label class="col-sm-1 col-form-label"></label>  
+        <div class="col-sm-4">  
+        <button type="submit" class="button">Submit</button>  
+        </div>  
+      </div>  
+        </div> 
+        
+     </form> 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script >
+      $("#id_mainproblem").change(function() {
+            var selected_option_value = $(this).find(":selected").val();
+            var url = "{% url 'load_problems' %}"
+            $.ajax({
+              url: url+"?EventMainProblem=+"+selected_option_value,
+              success: function (data){
+                $("#id_detailproblem").html(data);
+              }
+            });
+      });
+    </script>
+      
+    </div>
+
+
+
+    <div class="footer">
+      <h2>تمامی حقوق متعلق به شرکت پرداخت الکترونیک سداد می باشد </h2> 
+    </div>
+    
+    
+
+
+
+
+    
+
+
+  </body>
+  
+  
+
+ 
+{% endblock %}
+ 
+</html>
+

@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+
+{% block content %}
+{% load jformat %}
+{% load static %}
+{% csrf_token %}
+{% load crispy_forms_tags %}
+
+<html lang="en">  
+  <head>  
+     <meta charset="UTF-8">  
+     <title>Push</title>  
+     <link rel="stylesheet" href="{% static 'css/event.css' %}"/> 
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="navbar" id="myHeader">
+
+      <div>
+       <a href="{% url 'eventlist' %}">لیست رویدادها</a>
+       <a href="{% url 'event' %}">ثبت رویداد </a>
+       
+       
+      </div>
+       <a href="{% url 'logout' %}" class="right">خروج</a>
+    </div> 
+
+    
+
+    <div class="pushform">
+      <form method="POST" class="post-form" action="/push/{{ push.id }}" enctype="multipart/form-data"> 
+        {% csrf_token %} 
+         
+      <br>  
+    <div class="form-group row">  
+    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label"> (*)روز شروع  </label>  
+        <div class="col-sm-4">  
+          {{ form.day_of_start | as_crispy_field }}  
+        </div>
+        
+      
+        <label class="col-sm-2 col-form-label">(*)ماه شروع  </label>  
+        <div class="col-sm-4">  
+          {{ form.mounth_of_start  | as_crispy_field }}  
+        </div> 
+        
+        <label class="col-sm-2 col-form-label">(*)سال شروع </label>  
+        <div class="col-sm-4">  
+          {{ form.year_of_start  | as_crispy_field}}  
+        </div>
+        
+        <label class="col-sm-2 col-form-label">(*)ساعت شروع</label>  
+        <div class="col-sm-4">  
+          {{ form.hour_of_start | as_crispy_field}}  
+        </div>
+        
+        <label class="col-sm-2 col-form-label">(*)دقیقه شروع</label>  
+        <div class="col-sm-4">  
+          {{ form.minute_of_start | as_crispy_field}}  
+        </div> 
+                       
+      </div> 
+    
+    
+      <div class="form-group row">  
+        <label class="col-sm-2 col-form-label"> روز پایان </label>  
+        <div class="col-sm-4">  
+          {{ form.day_of_end | as_crispy_field}}  
+        </div> 
+        
+        <label class="col-sm-2 col-form-label">ماه پایان  </label>  
+        <div class="col-sm-4">  
+          {{ form.mounth_of_end | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">سال پایان </label>  
+        <div class="col-sm-4">  
+          {{ form.year_of_end | as_crispy_field}}  
+        </div> 
+        <label class="col-sm-2 col-form-label">ساعت پایان</label>  
+        <div class="col-sm-4">  
+          {{ form.hour_of_end | as_crispy_field}}  
+        </div>
+        <label class="col-sm-2 col-form-label">دقیقه پایان</label>  
+        <div class="col-sm-4">  
+          {{ form.minute_of_end | as_crispy_field}}  
+        </div>        
+      
+         
+        <label class="col-sm-2 col-form-label">سازمان</label>  
+        <div class="col-sm-4">  
+          {{ form.organization | as_crispy_field}}  
+        </div> 
+    
+       
+        <label class="col-sm-2 col-form-label">توضیحات (*)</label>  
+        <div class="col-sm-4">  
+          {{ form.description | as_crispy_field}}  
+        </div>  
+      </div>
+        
+      <div class="form-group row">  
+        <label class="col-sm-1 col-form-label"></label>  
+        <div class="col-sm-4">  
+        <button type="submit" class="button">Submit</button>  
+        </div>   
+      </div> 
+    </div>
+         
+        
+     </form> 
+
+    
+    </div>
+    <div class="footer">
+      <h2>تمامی حقوق متعلق به شرکت پرداخت الکترونیک سداد می باشد </h2> 
+    </div>
+  </body>
+  
+  
+
+ 
+{% endblock %}
+ 
+</html>
+

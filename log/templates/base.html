@@ -14,16 +14,18 @@
  <body>
    {% block content %}{% endblock %}
    {% if user.is_authenticated %}
-
+   
 
     <div class="navbar">
 
      <div>
       <a href="{% url 'eventlist' %}">لیست رویدادها</a>
       <a href="{% url 'event' %}">ثبت رویداد </a>
+      
       </div>
        <a href="{% url 'logout' %}" class="right">خروج</a>
-      </div> 
+      </div>
+    <a class="nav-link">Welcome, {{user.username}}</a> 
 
 
 

@@ -1,7 +1,7 @@
 from csv import field_size_limit
 from pyexpat import model
 from django import forms  
-from log.models import EventKindofProblem ,ResponseTime ,EventMainProblem,EventDetailProblem
+from log.models import EventKindofProblem, Push ,ResponseTime ,EventMainProblem,EventDetailProblem , E1MPLS
 
 
 class EventForm(forms.ModelForm):
@@ -15,6 +15,19 @@ class responsetimeform(forms.ModelForm):
     class Meta:
         model = ResponseTime
         fields = '__all__'
+
+class pushform(forms.ModelForm):
+
+    class Meta:
+        model = Push
+        fields = '__all__'
+
+class E1MPLSform(forms.ModelForm):
+
+    class Meta:
+        model = E1MPLS
+        fields = '__all__'
+
 
 #class CreateEventForm(forms.ModelForm):
 #   class Meta:
